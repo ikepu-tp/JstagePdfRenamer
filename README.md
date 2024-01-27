@@ -9,7 +9,23 @@ Google Chrome ブラウザ用の拡張機能です。
 > 
 > 利用者が増えるのであればウェブストアで公開します。
 
-## 使用方法
+## 使用方法[ブックマークレット]
+
+### 0. ブックマーク管理画面
+
+[chrome://bookmarks/](chrome://bookmarks/)を開いてください。
+
+### 1. ブックマークの作成
+
+`名前`は任意の値を入力してください。
+
+`URL`には`javascript:`を入力し，その後に`script.js`の内容をそのまま張り付けてください。
+
+### 2. PDFのダウンロード
+
+J-STAGEの任意のページ（e.g., [https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja](https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja)）を開き，1.で作成したブックマークをクリックしてください。
+
+## 使用方法[拡張機能]
 
 `Google Chrome`での利用を想定しています。
 
@@ -46,3 +62,19 @@ J-STAGEの任意のページ（e.g., [https://www.jstage.jst.go.jp/article/pamja
 「著者名（刊行年）タイトル」でダウンロードが実行されます。
 
 ![拡張機能のクリック](img/5_download_pdf.png)
+
+### アップデート
+
+### 0. スクリプトのダウンロード
+
+[https://github.com/ikepu-tp/JstagePdfRenamer](https://github.com/ikepu-tp/JstagePdfRenamer)を開き，右上の「Code > Download ZIP」から最新のスクリプトをダウンロードし，解凍してください。
+
+### 1. 拡張機能管理画面
+
+[chrome://extensions/](chrome://extensions/)を開いてください。
+
+### 2. 再読み込み
+
+拡張機能カードの一覧から`JstagePDFRenamer`を探し，右下の更新ボタンをクリックしてください。
+
+![拡張期のカード](img/update_2_card.png)
