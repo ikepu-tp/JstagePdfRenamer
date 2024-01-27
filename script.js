@@ -1,3 +1,7 @@
+if (
+  !window.location.href.match(/https:\/\/www.jstage.jst.go.jp\/article\/[^\S]*/)
+)
+  throw new Error("Invalid URL");
 try {
   var authors_element = document.getElementsByName("authors");
   var authors = [];
@@ -36,7 +40,6 @@ try {
  * @param {*} fileUrl
  */
 async function fileDownloadFromUrl(fileName, fileUrl) {
-  console.log("「" + file_name + "」をダウンロードします");
   const response = await fetch(fileUrl);
   const blob = await response.blob();
   const newBlob = new Blob([blob]);
@@ -51,5 +54,4 @@ async function fileDownloadFromUrl(fileName, fileUrl) {
   setTimeout(() => {
     window.URL.revokeObjectURL(objUrl);
   }, 250);
-  console.log("「" + file_name + "」をダウンロードしました");
 }
