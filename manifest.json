@@ -1,0 +1,19 @@
+{
+  "name": "JstagePDFRenamer",
+  "short_name": "PDFRenamer",
+  "version": "0.1.0",
+  "manifest_version": 2,
+  "description": "J-STAGEでPDFを「著者名（刊行年）タイトル」という名前でダウンロードします。",
+  "default_locale": "ja_JP",
+  "browser_action": {
+    "default_icon": {},
+    "default_title": "J-STAGEでPDFをダウンロード",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.jstage.jst.go.jp/article/*"],
+      "js": ["script.js"]
+    }
+  ]
+}
