@@ -5,8 +5,32 @@ J-STAGEでPDFを「著者名（刊行年）タイトル」という名前でダ�
 Google Chrome ブラウザ用の拡張機能です。
 
 > [!IMPORTANT]
-> 現在，ウェブストアで公開できるように審査を申請しています。
-> 申請が通るまでは以下の方法でご利用いただけます。
+> 現在，[Chromeウェブストア](https://chromewebstore.google.com/detail/jstagepdfrenamer/kapjcljkkbmanamjpmljojjekhpnhidg?hl=ja)で公開されています。
+> `Google Chrome`と`Microsoft Edge`，`Brave`は拡張機能を追加して利用できます。
+
+## 使用方法[拡張機能]
+
+### Google Chrome，Brave
+
+#### 1. 拡張機能の追加
+
+[Chromeウェブストア](https://chromewebstore.google.com/detail/jstagepdfrenamer/kapjcljkkbmanamjpmljojjekhpnhidg?hl=ja)にアクセスし，拡張機能を追加します。
+
+### Microsoft Edge
+
+#### 1. 下準備
+
+[edge://extensions/](edge://extensions/)（拡張機能管理画面）を開きます。
+
+#### 2. 拡張機能の許可
+
+左下にある「他のストアからの拡張機能を許可します。」を有効にします。
+
+![拡張機能を許可します](./img/edge_2.png)
+
+#### 3. 拡張機能の追加
+
+[Chromeウェブストア](https://chromewebstore.google.com/detail/jstagepdfrenamer/kapjcljkkbmanamjpmljojjekhpnhidg?hl=ja)にアクセスし，拡張機能を追加します。
 
 ## 使用方法[ブックマークレット]
 
@@ -23,57 +47,3 @@ Google Chrome ブラウザ用の拡張機能です。
 ### 2. PDFのダウンロード
 
 J-STAGEの任意のページ（e.g., [https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja](https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja)）を開き，1.で作成したブックマークをクリックしてください。
-
-## 使用方法[拡張機能]
-
-`Google Chrome`での利用を想定しています。
-
-> [!NOTE]
-> `Microsoft Edge`でも利用できました。（以下の説明は`Google Chrome`における説明であり，`Microsoft Edge`の場合は適宜読み替えてください。）
-
-### 0. スクリプトのダウンロード
-
-[https://github.com/ikepu-tp/JstagePdfRenamer](https://github.com/ikepu-tp/JstagePdfRenamer)を開き，右上の「Code > Download ZIP」からスクリプトをダウンロードし，解凍してください。
-
-### 1. 拡張機能管理画面
-
-[chrome://extensions/](chrome://extensions/)を開いてください。
-
-### 2. デベロッパーモードの有効
-
-右上の「デベロッパーモード」を有効にしてください。
-
-![デベロッパーモードの有効](img/2_able_developer_mode.png)
-
-### 3. パッケージ読み込み
-
-デベロッパーモードを有効にしたら，左上に「パッケージ化されていない拡張機能を読み込む」を開いてください。
-
-![パッケージ読み込み](img/3_read_package.png)
-
-### 4. フォルダの選択
-
-0.でダウンロードしたスクリプトのフォルダを選択してください。
-
-### 5. PDFのダウンロード
-
-J-STAGEの任意のページ（e.g., [https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja](https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja)）を開き，「JstagePDFRenamer」をクリックしてください。
-「著者名（刊行年）タイトル」でダウンロードが実行されます。
-
-![拡張機能のクリック](img/5_download_pdf.png)
-
-### アップデート
-
-### 0. スクリプトのダウンロード
-
-[https://github.com/ikepu-tp/JstagePdfRenamer](https://github.com/ikepu-tp/JstagePdfRenamer)を開き，右上の「Code > Download ZIP」から最新のスクリプトをダウンロードし，解凍してください。
-
-### 1. 拡張機能管理画面
-
-[chrome://extensions/](chrome://extensions/)を開いてください。
-
-### 2. 再読み込み
-
-拡張機能カードの一覧から`JstagePDFRenamer`を探し，右下の更新ボタンをクリックしてください。
-
-![拡張期のカード](img/update_2_card.png)
