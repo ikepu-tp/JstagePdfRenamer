@@ -35,3 +35,14 @@ Google Chrome ブラウザ用の拡張機能です。
 ### PDFのダウンロード
 
 J-STAGEの任意のページ（e.g., [https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja](https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja)）を開き，ツールバーにある拡張機能のアイコンをクリックしてください。
+
+## 更新履歴
+
+### v0.3.0 (2024.02.12)
+
+ページ上に要素を追加しました。
+これにより，ファイル名の編集が可能になったほか，ダウンロードが分かりやすくなりました。
+
+### v0.2.0 (2024.01.31)
+
+ウェブストアで公開しました。
