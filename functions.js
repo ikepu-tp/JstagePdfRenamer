@@ -38,12 +38,7 @@ function getFileNameUrl() {
   const pdf_url = pdf_url_element[0].content;
 
   const file_name =
-    authors.join("・") +
-    "（" +
-    paper_publication_date +
-    "）" +
-    paper_title +
-    ".pdf";
+    authors.join("・") + "（" + paper_publication_date + "）" + paper_title;
 
   return {
     file_name,
