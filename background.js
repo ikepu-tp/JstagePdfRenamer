@@ -1,6 +1,6 @@
 chrome.action.onClicked.addListener((tab) => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    files: ["script.js"],
+    files: ["functions.js", "download.js"],
   });
 });
