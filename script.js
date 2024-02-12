@@ -1,36 +1,38 @@
-if (
-  !window.location.href.match(/https:\/\/www.jstage.jst.go.jp\/article\/[^\S]*/)
-)
-  throw new Error("Invalid URL");
-
 try {
-  var pdf_url_element = document.getElementsByName("pdf_url");
+  if (
+    !window.location.href.match(
+      /https:\/\/www.jstage.jst.go.jp\/article\/[^\S]*/
+    )
+  )
+    throw new Error("Invalid URL");
+  const pdf_url_element = document.getElementsByName("pdf_url");
+
   if (!pdf_url_element[0]) throw new Error("PDF URL not found");
 
-  var authors_element = document.getElementsByName("authors");
-  var authors = [];
-  for (var i = 0; i < authors_element.length; ++i) {
-    var author_name = authors_element[i]
+  const authors_element = document.getElementsByName("authors");
+  const authors = [];
+  for (let i = 0; i < authors_element.length; ++i) {
+    const author_name = authors_element[i]
       ? authors_element[i].content
       : "Unknown";
-    var splited_author_name = author_name.split(" ");
+    const splited_author_name = author_name.split(" ");
     if (i > 2) break;
     authors.push(splited_author_name[0] + (i === 2 ? "ら" : ""));
   }
 
-  var paper_title_element = document.getElementsByName("title");
-  var paper_publication_date_element =
+  const paper_title_element = document.getElementsByName("title");
+  const paper_publication_date_element =
     document.getElementsByName("publication_date");
 
-  var paper_title = paper_title_element[0]
+  const paper_title = paper_title_element[0]
     ? paper_title_element[0].content
-    : "Unknown";
-  var paper_publication_date = paper_publication_date_element[0]
+    : "Unknown Title";
+  const paper_publication_date = paper_publication_date_element[0]
     ? new Date(paper_publication_date_element[0].content).getFullYear()
-    : "Unknown";
-  var pdf_url = pdf_url_element[0].content;
+    : "Unknown publication date";
+  const pdf_url = pdf_url_element[0].content;
 
-  var file_name =
+  const file_name =
     authors.join("・") +
     "（" +
     paper_publication_date +
@@ -41,7 +43,7 @@ try {
   fileDownloadFromUrl(file_name, pdf_url);
 } catch (e) {
   console.error(e);
-  alert("Error:" + e);
+  alert(e);
 }
 
 /**

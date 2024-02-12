@@ -8,7 +8,7 @@ Google Chrome ブラウザ用の拡張機能です。
 > 現在，[Chromeウェブストア](https://chromewebstore.google.com/detail/jstagepdfrenamer/kapjcljkkbmanamjpmljojjekhpnhidg?hl=ja)で公開されています。
 > `Google Chrome`と`Microsoft Edge`，`Brave`は拡張機能を追加して利用できます。
 
-## 使用方法[拡張機能]
+## 使用方法
 
 ### Google Chrome，Brave
 
@@ -32,18 +32,6 @@ Google Chrome ブラウザ用の拡張機能です。
 
 [Chromeウェブストア](https://chromewebstore.google.com/detail/jstagepdfrenamer/kapjcljkkbmanamjpmljojjekhpnhidg?hl=ja)にアクセスし，拡張機能を追加します。
 
-## 使用方法[ブックマークレット]
+### PDFのダウンロード
 
-### 0. ブックマーク管理画面
-
-[chrome://bookmarks/](chrome://bookmarks/)を開いてください。
-
-### 1. ブックマークの作成
-
-`名前`は任意の値を入力してください。
-
-`URL`には`javascript:`を入力し，その後に`script.js`の内容をそのまま張り付けてください。
-
-### 2. PDFのダウンロード
-
-J-STAGEの任意のページ（e.g., [https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja](https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja)）を開き，1.で作成したブックマークをクリックしてください。
+J-STAGEの任意のページ（e.g., [https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja](https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja)）を開き，ツールバーにある拡張機能のアイコンをクリックしてください。
