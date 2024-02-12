@@ -1,4 +1,17 @@
 try {
+  const fileNameUrl = getFileNameUrl();
+  fileDownloadFromUrl(fileNameUrl["file_name"], fileNameUrl["pdf_url"]);
+} catch (e) {
+  console.error(e);
+  alert(e);
+}
+
+/**
+ * ファイル名とURL取得
+ *
+ * @return {{file_name: string; pdf_url: string;}}
+ */
+function getFileNameUrl() {
   if (
     !window.location.href.match(
       /https:\/\/www.jstage.jst.go.jp\/article\/[^\S]*/
@@ -40,10 +53,10 @@ try {
     paper_title +
     ".pdf";
 
-  fileDownloadFromUrl(file_name, pdf_url);
-} catch (e) {
-  console.error(e);
-  alert(e);
+  return {
+    file_name,
+    pdf_url,
+  };
 }
 
 /**
