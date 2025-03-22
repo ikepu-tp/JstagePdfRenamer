@@ -1,10 +1,10 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { Container, createRoot, RootOptions } from "react-dom/client";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+export default function render(
+  container: Container,
+  children: React.ReactNode,
+  options: undefined | RootOptions = undefined
+): void {
+  createRoot(container, options).render(<StrictMode>{children}</StrictMode>);
+}
