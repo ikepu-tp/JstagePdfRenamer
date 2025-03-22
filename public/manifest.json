@@ -23,7 +23,7 @@
     {
       "matches": ["https://www.jstage.jst.go.jp/article/*"],
       "run_at": "document_end",
-      "js": ["functions.js", "add_element.js"]
+      "js": ["addElement.es.js"]
     }
   ]
 }
