@@ -36,6 +36,22 @@ Google Chrome ブラウザ用の拡張機能です。
 
 J-STAGEの任意のページ（e.g., [https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja](https://www.jstage.jst.go.jp/article/pamjaep/65/0/65_178/_article/-char/ja)）を開き，ツールバーにある拡張機能のアイコンをクリックしてください。
 
+## バグ・機能改修
+
+バグや機能改修のリクエストは以下のいずれかの方法でお知らせください。
+
+- [Issues](https://github.com/ikepu-tp/JstagePdfRenamer/issues)
+- [Pull Requests](https://github.com/ikepu-tp/JstagePdfRenamer/pulls)
+- [X](https://x.com/ikepu_tp)
+- [Form](https://forms.office.com/r/SkFsGSGTyQ)
+
+## ライセンス
+
+著作権を放棄していません。
+無許可での複製・再配布，改変は禁止します。
+個人での利用においても，原則改変をしないでください。
+改変を行う場合は，Forkし，Pull Requestを送信してください。
+
 ## 更新履歴
 
 ### v0.3.0 (2024.02.12)
