@@ -1,11 +1,11 @@
 {
   "name": "JstagePDFRenamer",
   "short_name": "PDFRenamer",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "manifest_version": 3,
   "description": "J-STAGEでPDFを「著者名（刊行年）タイトル」という名前でダウンロードします。",
   "homepage_url": "https://github.com/ikepu-tp/JstagePdfRenamer",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "action": {
     "default_icon": "img/logo16.png",
     "default_title": "ダウンロード"
@@ -17,13 +17,13 @@
     "128": "img/logo128.png"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.ts"
   },
+  "options_page": "src/html/setting.html",
   "content_scripts": [
     {
       "matches": ["https://www.jstage.jst.go.jp/article/*"],
-      "run_at": "document_end",
-      "js": ["functions.js", "add_element.js"]
+      "js": ["src/addElements.tsx"]
     }
   ]
 }
