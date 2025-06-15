@@ -1,11 +1,24 @@
 import { Box, Button, FormControl, TextField } from "@mui/material";
-import React, { ChangeEvent, MouseEvent, useState } from "react";
-import { fileDownloadFromUrl, getFileNameUrl } from "./../utils/files";
-
-const fileNameUrl = getFileNameUrl();
+import React, {
+  ChangeEvent,
+  MouseEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  fileDownloadFromUrl,
+  FileNameUrl,
+  getFileNameUrl,
+} from "./../utils/files";
 
 export default function DownloadArea(): React.ReactElement {
-  const [fileName, setFileName] = useState<string>(fileNameUrl.file_name);
+  const [fileName, setFileName] = useState<string>("");
+  const fileRef = useRef<FileNameUrl>({ file_name: "", pdf_url: "" });
+
+  useEffect(() => {
+    getFile();
+  }, []);
 
   function handleChangeFileName(e: ChangeEvent<HTMLInputElement>) {
     setFileName(e.target.value);
@@ -13,7 +26,13 @@ export default function DownloadArea(): React.ReactElement {
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    fileDownloadFromUrl(`${fileName}.pdf`, fileNameUrl.pdf_url);
+    fileDownloadFromUrl(`${fileName}.pdf`, fileRef.current.pdf_url);
+  }
+
+  async function getFile(): Promise<void> {
+    const fileNameUrl = await getFileNameUrl();
+    setFileName(fileNameUrl.file_name);
+    fileRef.current = fileNameUrl;
   }
   return (
     <Box

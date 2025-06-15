@@ -9,8 +9,8 @@ export type FileNameUrl = { file_name: string; pdf_url: string };
  * @export
  * @return {*}  {FileNameUrl}
  */
-export function getFileNameUrl(): FileNameUrl {
-  if (isJstage()) return getFileFromJstage();
+export async function getFileNameUrl(): Promise<FileNameUrl> {
+  if (isJstage()) return await getFileFromJstage();
   if (isTest()) return getFileFromTest();
 
   throw new Error("Invalid URL");
