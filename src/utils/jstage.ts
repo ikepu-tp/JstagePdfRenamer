@@ -83,10 +83,7 @@ export async function getFileNameFromTemplate(
     authors[2] = `${authors[2]}ら`;
   }
 
-  fileNameTemplate = fileNameTemplate.replace(
-    "%authors%",
-    (authors || []).join("・")
-  );
+  fileNameTemplate = fileNameTemplate.replace("%authors%", authors.join("・"));
   fileNameTemplate = fileNameTemplate.replace(
     "%title%",
     props.title || "Unknown Title"
