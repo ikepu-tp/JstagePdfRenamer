@@ -1,3 +1,4 @@
+import { DEFAULT_FILE_NAME_TEMPLATE } from "./constants";
 import { FileNameUrl } from "./files";
 import { getSyncStorage } from "./storage";
 
@@ -26,9 +27,7 @@ export async function getFileFromJstage(): Promise<FileNameUrl> {
     const author_name = authors_element[i]
       ? authors_element[i].content
       : "Unknown";
-    const splited_author_name = author_name.split(" ");
-    if (i > 2) break;
-    authors.push(splited_author_name[0] + (i === 2 ? "ら" : ""));
+    authors.push(author_name);
   }
 
   const paper_title_element = document.getElementsByName(
@@ -65,16 +64,28 @@ export type getFileNameFromTemplateProps = {
   authors?: string[];
   title?: string;
   publication_date?: Date | string;
+  fileNameTemplate?: string;
 };
 export async function getFileNameFromTemplate(
   props: getFileNameFromTemplateProps
 ): Promise<string> {
   let fileNameTemplate: string =
-    (await getSyncStorage("fileNameTemplate")).fileNameTemplate || "";
+    props.fileNameTemplate ||
+    (await getSyncStorage("fileNameTemplate")).fileNameTemplate ||
+    DEFAULT_FILE_NAME_TEMPLATE;
+
+  // 著者が3人以上の場合、3人目以降は「ら」を付ける
+  let authors: string[] =
+    props.authors?.map((author) => author.replace("　", " ").split(" ")[0]) ||
+    [];
+  if (authors.length > 3) {
+    authors = authors.slice(0, 3);
+    authors[2] = `${authors[2]}ら`;
+  }
 
   fileNameTemplate = fileNameTemplate.replace(
     "%authors%",
-    (props.authors || []).join("・")
+    (authors || []).join("・")
   );
   fileNameTemplate = fileNameTemplate.replace(
     "%title%",
