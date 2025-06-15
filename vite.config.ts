@@ -1,9 +1,11 @@
+import { crx } from "@crxjs/vite-plugin";
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
+import manifest from "./manifest.json";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), crx({ manifest })],
   server: {
     host: true,
     hmr: {
@@ -14,8 +16,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: ["src/main.tsx", "src/addElements.tsx", "src/setting.tsx"],
-      fileName: (format, entryName) => `${entryName}.${format}.js`,
-      formats: ["es", "cjs"],
+      fileName: (_, entryName) => `${entryName}.js`,
+      formats: ["es"],
     },
   },
 });

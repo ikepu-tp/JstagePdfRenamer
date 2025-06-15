@@ -4,7 +4,7 @@ export type StorageResource<
 > = Record<string, V> & T;
 
 export async function getSyncStorage(
-  key: keyof StorageResource | (keyof StorageResource)[]
+  key: keyof StorageResource | (keyof StorageResource)[] | undefined = undefined
 ): Promise<StorageResource> {
   const got = await chrome.storage.sync.get(key);
   return got;

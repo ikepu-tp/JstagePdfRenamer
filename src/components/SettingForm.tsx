@@ -1,21 +1,26 @@
 import { Box, Button, FormControl, TextField } from "@mui/material";
 import { useActionState, useEffect } from "react";
+import { getSyncStorage, setSyncStorage } from "../utils/storage";
 
 export type SettingResource = {
   fileNameTemplate: string;
 };
 export default function SettingForm(): React.ReactElement {
   const [initialState, action, isPending] = useActionState<SettingResource>(
-    async (...args) => {
-      console.log(args);
-      return args[0];
+    async (data) => {
+      setSyncStorage(data);
+      return data;
     },
     {
       fileNameTemplate: "%authors% (%year%) %title%",
     }
   );
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getSyncStorage("fileNameTemplate").then((data) => {
+      console.log(data);
+    });
+  }, []);
 
   return (
     <Box sx={{ padding: 1, minWidth: "300px", width: "auto" }}>
