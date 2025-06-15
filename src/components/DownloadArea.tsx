@@ -18,7 +18,7 @@ export default function DownloadArea(): React.ReactElement {
   return (
     <Box
       sx={{
-        padding: 1,
+        padding: 2,
         position: "fixed",
         right: 0,
         top: "130px",
@@ -28,7 +28,7 @@ export default function DownloadArea(): React.ReactElement {
         borderRadius: "5px",
         minWidth: "300px",
         width: "fit-content",
-        maxWidth: "50%",
+        maxWidth: "500px",
       }}
     >
       <FormControl sx={{ display: "block", mb: 1 }}>
