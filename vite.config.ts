@@ -13,11 +13,4 @@ export default defineConfig({
     },
     port: 3000,
   },
-  build: {
-    lib: {
-      entry: ["src/main.tsx", "src/addElements.tsx", "src/setting.tsx"],
-      fileName: (_, entryName) => `${entryName}.js`,
-      formats: ["es"],
-    },
-  },
 });

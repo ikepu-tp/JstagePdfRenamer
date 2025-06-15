@@ -16,6 +16,10 @@
     "96": "img/logo96.png",
     "128": "img/logo128.png"
   },
+  "background": {
+    "service_worker": "src/background.ts"
+  },
+  "options_page": "src/html/setting.html",
   "content_scripts": [
     {
       "matches": ["https://www.jstage.jst.go.jp/article/*"],

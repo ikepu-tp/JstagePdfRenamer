@@ -1,26 +1,41 @@
 import { Box, Button, FormControl, TextField } from "@mui/material";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { getSyncStorage, setSyncStorage } from "../utils/storage";
 
 export type SettingResource = {
   fileNameTemplate: string;
 };
 export default function SettingForm(): React.ReactElement {
-  const [initialState, action, isPending] = useActionState<SettingResource>(
+  const [, action, isPending] = useActionState<SettingResource>(
     async (data) => {
-      setSyncStorage(data);
+      // 入力値をchrome.storage.syncに保存
+      if (fileNameTemplate === "")
+        throw new Error("Input file name template is required");
+      setSyncStorage({ fileNameTemplate });
+
       return data;
     },
     {
-      fileNameTemplate: "%authors% (%year%) %title%",
+      fileNameTemplate: "",
     }
   );
+  const [fileNameTemplate, setFileNameTemplate] = useState<string>("");
 
   useEffect(() => {
-    getSyncStorage("fileNameTemplate").then((data) => {
-      console.log(data);
-    });
+    getFileNameTemplate();
   }, []);
+
+  function handleChangeFileNameTemplate(
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+    setFileNameTemplate(e.target.value);
+  }
+
+  async function getFileNameTemplate(): Promise<void> {
+    const name =
+      (await getSyncStorage("fileNameTemplate")).fileNameTemplate || "";
+    setFileNameTemplate(name);
+  }
 
   return (
     <Box sx={{ padding: 1, minWidth: "300px", width: "auto" }}>
@@ -34,7 +49,8 @@ export default function SettingForm(): React.ReactElement {
             label="ファイル名テンプレート"
             type="text"
             variant="outlined"
-            defaultValue={initialState.fileNameTemplate}
+            value={fileNameTemplate}
+            onChange={handleChangeFileNameTemplate}
           />
         </FormControl>
         <Box>
