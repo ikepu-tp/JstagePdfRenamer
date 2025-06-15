@@ -1,7 +1,7 @@
 import { FileNameUrl } from "./files";
 
 export function isTest(): boolean {
-  return true;
+  return false;
 }
 
 export function getFileFromTest(): FileNameUrl {
