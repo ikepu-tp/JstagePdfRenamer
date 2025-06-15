@@ -6,7 +6,7 @@ export function isTest(): boolean {
 
 export function getFileFromTest(): FileNameUrl {
   return {
-    file_name: "test",
+    file_name: "ikepu-tp(2024)JstagePDFRenamer_cm",
     pdf_url:
       "https://ikepu-tp.com/wp-content/uploads/2024/09/JstagePDFRenamer_cm.pdf",
   };

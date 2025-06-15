@@ -13,7 +13,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: ["src/main.tsx", "src/addElements.tsx"],
+      entry: ["src/main.tsx", "src/addElements.tsx", "src/setting.tsx"],
       fileName: (format, entryName) => `${entryName}.${format}.js`,
       formats: ["es", "cjs"],
     },
