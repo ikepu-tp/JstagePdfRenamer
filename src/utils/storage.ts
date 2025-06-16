@@ -1,3 +1,5 @@
+import { DEFAULT_FILE_NAME_TEMPLATE } from "./constants";
+
 export type StorageResource<
   V = string | number | boolean,
   T = Record<string, V>
@@ -24,4 +26,17 @@ export async function getSyncStorage(
 export async function setSyncStorage(value: StorageResource): Promise<void> {
   await chrome.storage.sync.set(value);
   console.debug("setSyncStorage:", value);
+}
+
+/**
+ * @export
+ * @return {*}  {Promise<void>}
+ */
+export async function initializeStorage(): Promise<void> {
+  const defaultStorage: StorageResource = {
+    fileNameTemplate: DEFAULT_FILE_NAME_TEMPLATE,
+  };
+  const currentStorage = await getSyncStorage(Object.keys(defaultStorage));
+
+  await setSyncStorage({ ...defaultStorage, ...currentStorage });
 }
