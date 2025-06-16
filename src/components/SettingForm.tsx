@@ -22,7 +22,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useActionState, useEffect, useState } from "react";
-import { DEFAULT_FILE_NAME_TEMPLATE } from "../utils/constants";
+import {
+  DEFAULT_BUTTON_DESIGN,
+  DEFAULT_FILE_NAME_TEMPLATE,
+} from "../utils/constants";
 import { getFileNameFromTemplate } from "../utils/jstage";
 import {
   buttonDesignType,
@@ -30,9 +33,6 @@ import {
   setSyncStorage,
 } from "../utils/storage";
 
-export type SettingResource = {
-  fileNameTemplate: string;
-};
 export default function SettingForm(): React.ReactElement {
   const [, action, isPending] = useActionState<null>(async (data) => {
     setSyncStorage({ fileNameTemplate, buttonDesign });
@@ -46,6 +46,7 @@ export default function SettingForm(): React.ReactElement {
 
   useEffect(() => {
     getFileNameTemplate();
+    getButtonDesign();
   }, []);
   useEffect(() => {
     if (!fileNameTemplate) return;
@@ -58,6 +59,13 @@ export default function SettingForm(): React.ReactElement {
       DEFAULT_FILE_NAME_TEMPLATE;
 
     setFileNameTemplate(name);
+  }
+
+  async function getButtonDesign(): Promise<void> {
+    const design =
+      (await getSyncStorage("buttonDesign")).buttonDesign ||
+      DEFAULT_BUTTON_DESIGN;
+    setButtonDesign(design);
   }
 
   async function getExampleFileName(name: string): Promise<void> {
@@ -139,7 +147,7 @@ export default function SettingForm(): React.ReactElement {
             </AccordionDetails>
           </Accordion>
         </FormControl>
-        <FormControl>
+        <FormControl sx={{ mt: 2 }}>
           <InputLabel id="button-design-label">ボタンデザイン</InputLabel>
           <Select
             labelId="button-design-label"
@@ -151,8 +159,22 @@ export default function SettingForm(): React.ReactElement {
             <MenuItem value="outlined">囲み</MenuItem>
             <MenuItem value="contained">色付き</MenuItem>
           </Select>
+          <Accordion sx={{ mt: 1, width: "auto" }}>
+            <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+              <Typography component={"span"}>説明</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Button variant="text">文字のみ</Button>
+              <Button variant="outlined" sx={{ ml: 1 }}>
+                囲み
+              </Button>
+              <Button variant="contained" sx={{ ml: 1 }}>
+                色付き
+              </Button>
+            </AccordionDetails>
+          </Accordion>
         </FormControl>
-        <Box>
+        <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
           <Button type="submit" disabled={isPending} variant="contained">
             保存
           </Button>
