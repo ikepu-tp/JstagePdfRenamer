@@ -22,51 +22,26 @@ import {
   Typography,
 } from "@mui/material";
 import { useActionState, useEffect, useState } from "react";
-import {
-  DEFAULT_BUTTON_DESIGN,
-  DEFAULT_FILE_NAME_TEMPLATE,
-} from "../utils/constants";
 import { getFileNameFromTemplate } from "../utils/jstage";
-import {
-  buttonDesignType,
-  getSyncStorage,
-  setSyncStorage,
-} from "../utils/storage";
+import { buttonDesignType, setSyncStorage } from "../utils/storage";
 
-export default function SettingForm(): React.ReactElement {
+export type SettingFormProps = {
+  fileNameTemplate: string;
+  buttonDesign: buttonDesignType;
+};
+export default function SettingForm(
+  props: SettingFormProps
+): React.ReactElement {
   const [, action, isPending] = useActionState<null>(async (data) => {
-    setSyncStorage({ fileNameTemplate, buttonDesign });
+    setSyncStorage(Setting);
     return data;
   }, null);
 
-  const [fileNameTemplate, setFileNameTemplate] = useState<string>("");
-  const [buttonDesign, setButtonDesign] =
-    useState<buttonDesignType>("contained");
+  const [Setting, setSetting] = useState<SettingFormProps>(props);
   const [exampleFileName, setExampleFileName] = useState<string>("");
-
   useEffect(() => {
-    getFileNameTemplate();
-    getButtonDesign();
-  }, []);
-  useEffect(() => {
-    if (!fileNameTemplate) return;
-    getExampleFileName(fileNameTemplate);
-  }, [fileNameTemplate]);
-
-  async function getFileNameTemplate(): Promise<void> {
-    const name =
-      (await getSyncStorage("fileNameTemplate")).fileNameTemplate ||
-      DEFAULT_FILE_NAME_TEMPLATE;
-
-    setFileNameTemplate(name);
-  }
-
-  async function getButtonDesign(): Promise<void> {
-    const design =
-      (await getSyncStorage("buttonDesign")).buttonDesign ||
-      DEFAULT_BUTTON_DESIGN;
-    setButtonDesign(design);
-  }
+    getExampleFileName(Setting.fileNameTemplate);
+  }, [Setting.fileNameTemplate]);
 
   async function getExampleFileName(name: string): Promise<void> {
     const fileName = await getFileNameFromTemplate({
@@ -78,14 +53,14 @@ export default function SettingForm(): React.ReactElement {
     setExampleFileName(fileName);
   }
 
-  function handleChangeFileNameTemplate(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-    setFileNameTemplate(e.target.value);
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    Setting[e.target.name as keyof SettingFormProps] = e.target.value as never;
+    setSetting({ ...{}, ...Setting });
   }
 
   function handleChangeButtonDesign(e: SelectChangeEvent<string>) {
-    setButtonDesign(e.target.value as buttonDesignType);
+    Setting[e.target.name as keyof SettingFormProps] = e.target.value as never;
+    setSetting({ ...{}, ...Setting });
   }
 
   return (
@@ -109,8 +84,8 @@ export default function SettingForm(): React.ReactElement {
             label="ファイル名テンプレート"
             type="text"
             variant="outlined"
-            value={fileNameTemplate}
-            onChange={handleChangeFileNameTemplate}
+            value={Setting.fileNameTemplate}
+            onChange={handleChange}
           />
           <Alert color="info" variant="outlined" sx={{ mt: 1 }}>
             例: {exampleFileName}
@@ -152,7 +127,7 @@ export default function SettingForm(): React.ReactElement {
           <Select
             labelId="button-design-label"
             label="ボタンデザイン"
-            value={buttonDesign}
+            value={Setting.buttonDesign}
             onChange={handleChangeButtonDesign}
           >
             <MenuItem value="text">文字のみ</MenuItem>
