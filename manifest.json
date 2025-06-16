@@ -19,7 +19,7 @@
   "background": {
     "service_worker": "src/background.ts"
   },
-  "options_page": "src/html/setting.html",
+  "options_page": "src/html/options.html",
   "content_scripts": [
     {
       "matches": ["https://www.jstage.jst.go.jp/article/*"],
