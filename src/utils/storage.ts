@@ -1,9 +1,14 @@
-import { DEFAULT_FILE_NAME_TEMPLATE } from "./constants";
+import { DEFAULT_BUTTON_DESIGN, DEFAULT_FILE_NAME_TEMPLATE } from "./constants";
 
+export type buttonDesignType = "text" | "outlined" | "contained";
 export type StorageResource<
   V = string | number | boolean,
   T = Record<string, V>
-> = Record<string, V> & T & { fileNameTemplate?: string };
+> = Record<string, V> &
+  T & {
+    fileNameTemplate?: string;
+    buttonDesign?: buttonDesignType;
+  };
 
 /**
  * 指定したキーの値をchrome.storage.syncから取得します。
@@ -35,6 +40,7 @@ export async function setSyncStorage(value: StorageResource): Promise<void> {
 export async function initializeStorage(): Promise<void> {
   const defaultStorage: StorageResource = {
     fileNameTemplate: DEFAULT_FILE_NAME_TEMPLATE,
+    buttonDesign: DEFAULT_BUTTON_DESIGN,
   };
   const currentStorage = await getSyncStorage(Object.keys(defaultStorage));
 

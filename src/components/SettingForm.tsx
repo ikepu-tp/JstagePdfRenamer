@@ -7,6 +7,11 @@ import {
   Box,
   Button,
   FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  SelectChangeEvent,
   Table,
   TableBody,
   TableCell,
@@ -19,26 +24,24 @@ import {
 import { useActionState, useEffect, useState } from "react";
 import { DEFAULT_FILE_NAME_TEMPLATE } from "../utils/constants";
 import { getFileNameFromTemplate } from "../utils/jstage";
-import { getSyncStorage, setSyncStorage } from "../utils/storage";
+import {
+  buttonDesignType,
+  getSyncStorage,
+  setSyncStorage,
+} from "../utils/storage";
 
 export type SettingResource = {
   fileNameTemplate: string;
 };
 export default function SettingForm(): React.ReactElement {
-  const [, action, isPending] = useActionState<SettingResource>(
-    async (data) => {
-      // 入力値をchrome.storage.syncに保存
-      if (fileNameTemplate === "")
-        throw new Error("Input file name template is required");
-      setSyncStorage({ fileNameTemplate });
+  const [, action, isPending] = useActionState<null>(async (data) => {
+    setSyncStorage({ fileNameTemplate, buttonDesign });
+    return data;
+  }, null);
 
-      return data;
-    },
-    {
-      fileNameTemplate: "",
-    }
-  );
   const [fileNameTemplate, setFileNameTemplate] = useState<string>("");
+  const [buttonDesign, setButtonDesign] =
+    useState<buttonDesignType>("contained");
   const [exampleFileName, setExampleFileName] = useState<string>("");
 
   useEffect(() => {
@@ -48,12 +51,6 @@ export default function SettingForm(): React.ReactElement {
     if (!fileNameTemplate) return;
     getExampleFileName(fileNameTemplate);
   }, [fileNameTemplate]);
-
-  function handleChangeFileNameTemplate(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
-    setFileNameTemplate(e.target.value);
-  }
 
   async function getFileNameTemplate(): Promise<void> {
     const name =
@@ -73,8 +70,27 @@ export default function SettingForm(): React.ReactElement {
     setExampleFileName(fileName);
   }
 
+  function handleChangeFileNameTemplate(
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+    setFileNameTemplate(e.target.value);
+  }
+
+  function handleChangeButtonDesign(e: SelectChangeEvent<string>) {
+    setButtonDesign(e.target.value as buttonDesignType);
+  }
+
   return (
-    <Box sx={{ padding: 1, minWidth: "300px", width: "auto" }}>
+    <Paper
+      sx={{
+        padding: 1,
+        minWidth: "300px",
+        width: "auto",
+        maxWidth: "600px",
+        mx: "auto",
+        mt: 4,
+      }}
+    >
       <Box
         component={"form"}
         sx={{ display: "flex", flexDirection: "column", rowGap: 1, p: 2 }}
@@ -123,12 +139,25 @@ export default function SettingForm(): React.ReactElement {
             </AccordionDetails>
           </Accordion>
         </FormControl>
+        <FormControl>
+          <InputLabel id="button-design-label">ボタンデザイン</InputLabel>
+          <Select
+            labelId="button-design-label"
+            label="ボタンデザイン"
+            value={buttonDesign}
+            onChange={handleChangeButtonDesign}
+          >
+            <MenuItem value="text">文字のみ</MenuItem>
+            <MenuItem value="outlined">囲み</MenuItem>
+            <MenuItem value="contained">色付き</MenuItem>
+          </Select>
+        </FormControl>
         <Box>
           <Button type="submit" disabled={isPending} variant="contained">
             保存
           </Button>
         </Box>
       </Box>
-    </Box>
+    </Paper>
   );
 }
