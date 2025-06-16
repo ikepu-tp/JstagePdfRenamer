@@ -83,6 +83,7 @@ export default function SettingForm(
           <TextField
             label="ファイル名テンプレート"
             type="text"
+            name="fileNameTemplate"
             variant="outlined"
             value={Setting.fileNameTemplate}
             onChange={handleChange}
@@ -127,6 +128,7 @@ export default function SettingForm(
           <Select
             labelId="button-design-label"
             label="ボタンデザイン"
+            name="buttonDesign"
             value={Setting.buttonDesign}
             onChange={handleChangeButtonDesign}
           >
