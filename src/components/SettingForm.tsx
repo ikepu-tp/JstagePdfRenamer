@@ -25,11 +25,17 @@ import {
 } from "@mui/material";
 import React, { useActionState, useEffect, useState } from "react";
 import { getFileNameFromTemplate } from "../utils/jstage";
-import { designType, setSyncStorage } from "../utils/storage";
+import {
+  colorType,
+  designType,
+  setSyncStorage,
+  StorageResource,
+} from "../utils/storage";
 
 export type SettingFormProps = {
   fileNameTemplate: string;
   buttonDesign: designType;
+  buttonColor: colorType;
 };
 export default function SettingForm(
   props: SettingFormProps
@@ -39,7 +45,7 @@ export default function SettingForm(
     return data;
   }, null);
 
-  const [Setting, setSetting] = useState<SettingFormProps>(props);
+  const [Setting, setSetting] = useState<StorageResource>(props);
   const [exampleFileName, setExampleFileName] = useState<string>("");
   const [TabValue, setTabValue] = useState<string>("fileName");
 
@@ -47,7 +53,7 @@ export default function SettingForm(
     getExampleFileName(Setting.fileNameTemplate);
   }, [Setting.fileNameTemplate]);
 
-  async function getExampleFileName(name: string): Promise<void> {
+  async function getExampleFileName(name: string | undefined): Promise<void> {
     const fileName = await getFileNameFromTemplate({
       fileNameTemplate: name,
       authors: ["山田　太郎", "佐藤 花子", "鈴木一郎", "田中　次郎"],
@@ -62,7 +68,7 @@ export default function SettingForm(
     setSetting({ ...{}, ...Setting });
   }
 
-  function handleChangeButtonDesign(e: SelectChangeEvent<string>) {
+  function handleChangeBySelect(e: SelectChangeEvent<string>) {
     Setting[e.target.name as keyof SettingFormProps] = e.target.value as never;
     setSetting({ ...{}, ...Setting });
   }
@@ -163,7 +169,7 @@ export default function SettingForm(
               label="ボタンデザイン"
               name="buttonDesign"
               value={Setting.buttonDesign}
-              onChange={handleChangeButtonDesign}
+              onChange={handleChangeBySelect}
             >
               <MenuItem value="text">文字のみ</MenuItem>
               <MenuItem value="outlined">囲み</MenuItem>
@@ -174,12 +180,96 @@ export default function SettingForm(
                 <Typography component={"span"}>説明</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Button variant="text">文字のみ</Button>
-                <Button variant="outlined" sx={{ ml: 1 }}>
+                <Button variant="text" color={Setting.buttonColor}>
+                  文字のみ
+                </Button>
+                <Button
+                  variant="outlined"
+                  sx={{ ml: 1 }}
+                  color={Setting.buttonColor}
+                >
                   囲み
                 </Button>
-                <Button variant="contained" sx={{ ml: 1 }}>
+                <Button
+                  variant="contained"
+                  sx={{ ml: 1 }}
+                  color={Setting.buttonColor}
+                >
                   色付き
+                </Button>
+              </AccordionDetails>
+            </Accordion>
+          </FormControl>
+          <FormControl sx={{ mt: 2 }}>
+            <InputLabel id="button-color-label">ボタンカラー</InputLabel>
+            <Select
+              labelId="button-color-label"
+              label="ボタンカラー"
+              name="buttonColor"
+              value={Setting.buttonColor}
+              onChange={handleChangeBySelect}
+            >
+              <MenuItem value="primary">
+                <Typography color="primary">プライマリ</Typography>
+              </MenuItem>
+              <MenuItem value="secondary">
+                <Typography color="secondary">セカンダリ</Typography>
+              </MenuItem>
+              <MenuItem value="error">
+                <Typography color="error">エラー</Typography>
+              </MenuItem>
+              <MenuItem value="info">
+                <Typography color="info">インフォ</Typography>
+              </MenuItem>
+              <MenuItem value="success">
+                <Typography color="success">サクセス</Typography>
+              </MenuItem>
+              <MenuItem value="warning">
+                <Typography color="warning">ワーニング</Typography>
+              </MenuItem>
+            </Select>
+            <Accordion sx={{ mt: 1, width: "auto" }}>
+              <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                <Typography component={"span"}>説明</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Button variant={Setting.buttonDesign} color="primary">
+                  プライマリ
+                </Button>
+                <Button
+                  variant={Setting.buttonDesign}
+                  color="secondary"
+                  sx={{ ml: 1 }}
+                >
+                  セカンダリ
+                </Button>
+                <Button
+                  variant={Setting.buttonDesign}
+                  color="error"
+                  sx={{ ml: 1 }}
+                >
+                  エラー
+                </Button>
+                <Button
+                  variant={Setting.buttonDesign}
+                  color="info"
+                  sx={{ ml: 1 }}
+                >
+                  インフォ
+                </Button>
+                <Button
+                  variant={Setting.buttonDesign}
+                  color="success"
+                  sx={{ ml: 1 }}
+                >
+                  サクセス
+                </Button>
+                <Button
+                  variant={Setting.buttonDesign}
+                  color="warning"
+                  sx={{ ml: 1 }}
+                >
+                  ワーニング
                 </Button>
               </AccordionDetails>
             </Accordion>

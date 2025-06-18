@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  DEFAULT_BUTTON_COLOR,
   DEFAULT_BUTTON_DESIGN,
   DEFAULT_FILE_NAME_TEMPLATE,
 } from "../utils/constants";
@@ -16,10 +17,15 @@ export function Option(): React.ReactNode {
   }, []);
 
   async function getSetting(): Promise<void> {
-    const storage = await getSyncStorage(["fileNameTemplate", "buttonDesign"]);
+    const storage = await getSyncStorage([
+      "fileNameTemplate",
+      "buttonDesign",
+      "buttonColor",
+    ]);
     const newSetting: SettingFormProps = {
       fileNameTemplate: storage.fileNameTemplate || DEFAULT_FILE_NAME_TEMPLATE,
       buttonDesign: storage.buttonDesign || DEFAULT_BUTTON_DESIGN,
+      buttonColor: storage.buttonColor || DEFAULT_BUTTON_COLOR,
     };
 
     setSetting({ ...{}, ...newSetting });
