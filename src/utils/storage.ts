@@ -1,13 +1,21 @@
-import { DEFAULT_BUTTON_DESIGN, DEFAULT_FILE_NAME_TEMPLATE } from "./constants";
+import { DEFAULT_STORAGE } from "./constants";
 
-export type buttonDesignType = "text" | "outlined" | "contained";
+export type designType = "text" | "outlined" | "contained";
+export type colorType =
+  | "primary"
+  | "secondary"
+  | "error"
+  | "info"
+  | "success"
+  | "warning";
 export type StorageResource<
   V = string | number | boolean,
   T = Record<string, V>
 > = Record<string, V> &
   T & {
     fileNameTemplate?: string;
-    buttonDesign?: buttonDesignType;
+    buttonDesign?: designType;
+    buttonColor?: colorType;
   };
 
 /**
@@ -38,11 +46,8 @@ export async function setSyncStorage(value: StorageResource): Promise<void> {
  * @return {*}  {Promise<void>}
  */
 export async function initializeStorage(): Promise<void> {
-  const defaultStorage: StorageResource = {
-    fileNameTemplate: DEFAULT_FILE_NAME_TEMPLATE,
-    buttonDesign: DEFAULT_BUTTON_DESIGN,
-  };
+  const defaultStorage: StorageResource = DEFAULT_STORAGE;
   const currentStorage = await getSyncStorage(Object.keys(defaultStorage));
 
-  await setSyncStorage({ ...defaultStorage, ...currentStorage });
+  await setSyncStorage({ ...{}, ...defaultStorage, ...currentStorage });
 }

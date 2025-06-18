@@ -25,11 +25,11 @@ import {
 } from "@mui/material";
 import React, { useActionState, useEffect, useState } from "react";
 import { getFileNameFromTemplate } from "../utils/jstage";
-import { buttonDesignType, setSyncStorage } from "../utils/storage";
+import { designType, setSyncStorage } from "../utils/storage";
 
 export type SettingFormProps = {
   fileNameTemplate: string;
-  buttonDesign: buttonDesignType;
+  buttonDesign: designType;
 };
 export default function SettingForm(
   props: SettingFormProps
