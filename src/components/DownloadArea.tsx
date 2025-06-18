@@ -6,6 +6,8 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { DEFAULT_STORAGE } from "../utils/constants";
+import { getSyncStorage, StorageResource } from "../utils/storage";
 import {
   fileDownloadFromUrl,
   FileNameUrl,
@@ -15,9 +17,14 @@ import {
 export default function DownloadArea(): React.ReactElement {
   const [fileName, setFileName] = useState<string>("");
   const fileRef = useRef<FileNameUrl>({ file_name: "", pdf_url: "" });
+  const [StorageValue, setStorageValue] = useState<StorageResource>({
+    ...{},
+    ...DEFAULT_STORAGE,
+  });
 
   useEffect(() => {
     getFile();
+    getStorage();
   }, []);
 
   function handleChangeFileName(e: ChangeEvent<HTMLInputElement>) {
@@ -33,6 +40,15 @@ export default function DownloadArea(): React.ReactElement {
     const fileNameUrl = await getFileNameUrl();
     setFileName(fileNameUrl.file_name);
     fileRef.current = fileNameUrl;
+  }
+
+  async function getStorage(): Promise<void> {
+    const storage = await getSyncStorage([
+      "fileNameTemplate",
+      "buttonDesign",
+      "buttonColor",
+    ]);
+    setStorageValue({ ...{}, ...storage });
   }
   return (
     <Box
@@ -66,7 +82,8 @@ export default function DownloadArea(): React.ReactElement {
       <Button
         type="button"
         onClick={handleClick}
-        variant="contained"
+        variant={StorageValue.buttonDesign}
+        color={StorageValue.buttonColor}
         disabled={fileName === ""}
       >
         PDFを「{fileName}」でダウンロード

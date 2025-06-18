@@ -1,0 +1,82 @@
+# .github/workflows/release-on-version-update.yml
+name: Build & Release when version changes
+
+on:
+  push:
+    branches: [main]
+    paths: # manifest.json が変更された push でのみ起動
+      - "manifest.json"
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) リポジトリ取得（履歴 1 つ前まで必要なので fetch-depth 0）
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2) Node & Yarn キャッシュ付きセットアップ
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20 # 必要に応じて変更
+          cache: yarn
+
+      # 3) 依存関係インストール
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # 4) 現在バージョン取得
+      - name: Read current version
+        id: version
+        run: |
+          echo "version=$(jq -r .version manifest.json)" >> "$GITHUB_OUTPUT"
+
+      # 5) 1つ前のコミットとのバージョン比較
+      - name: Detect version change
+        id: changed
+        run: |
+          CUR="${{ steps.version.outputs.version }}"
+          PREV=$(git show HEAD^:manifest.json | jq -r .version 2>/dev/null || echo "")
+          echo "prev_version=$PREV"  >> "$GITHUB_OUTPUT"
+          echo "changed=$([ "$CUR" != "$PREV" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      # 6) バージョンが変わらなければジョブ終了
+      - name: Skip if unchanged
+        if: steps.changed.outputs.changed == 'false'
+        run: |
+          echo "Version unchanged (${{ steps.version.outputs.version }}). Skip build."
+          exit 0
+
+      # 7) ビルド
+      - name: Build project
+        if: steps.changed.outputs.changed == 'true'
+        run: yarn build # ← package.json の build スクリプトを実行
+
+      # 8) dist を zip 化（バージョン名.zip）
+      - name: Zip dist directory
+        if: steps.changed.outputs.changed == 'true'
+        run: |
+          cd dist
+          zip -r "../${{ steps.version.outputs.version }}.zip" .
+          cd ..
+
+      # 9) Git タグを作成・プッシュ
+      - name: Create git tag
+        if: steps.changed.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
+          git push origin "v${{ steps.version.outputs.version }}"
+
+      # 10) GitHub Release を作成し zip を添付
+      - name: Create GitHub Release
+        if: steps.changed.outputs.changed == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          files: ${{ steps.version.outputs.version }}.zip
+          fail_on_unmatched_files: true # zip が無い場合は失敗
