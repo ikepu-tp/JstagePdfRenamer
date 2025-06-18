@@ -42,7 +42,11 @@ export default function DownloadArea(): React.ReactElement {
   }
 
   async function getStorage(): Promise<void> {
-    const storage = await getSyncStorage(["fileNameTemplate", "buttonDesign"]);
+    const storage = await getSyncStorage([
+      "fileNameTemplate",
+      "buttonDesign",
+      "buttonColor",
+    ]);
     setStorageValue({ ...{}, ...storage });
   }
   return (
@@ -78,6 +82,7 @@ export default function DownloadArea(): React.ReactElement {
         type="button"
         onClick={handleClick}
         variant={StorageValue.buttonDesign}
+        color={StorageValue.buttonColor}
         disabled={fileName === ""}
       >
         PDFを「{fileName}」でダウンロード
