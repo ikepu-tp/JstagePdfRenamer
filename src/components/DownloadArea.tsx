@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { DEFAULT_STORAGE } from "../utils/constants";
 import { getSyncStorage, StorageResource } from "../utils/storage";
 import {
   fileDownloadFromUrl,
@@ -17,8 +18,8 @@ export default function DownloadArea(): React.ReactElement {
   const [fileName, setFileName] = useState<string>("");
   const fileRef = useRef<FileNameUrl>({ file_name: "", pdf_url: "" });
   const [StorageValue, setStorageValue] = useState<StorageResource>({
-    fileNameTemplate: "",
-    buttonDesign: "contained",
+    ...{},
+    ...DEFAULT_STORAGE,
   });
 
   useEffect(() => {
