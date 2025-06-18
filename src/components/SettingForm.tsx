@@ -162,118 +162,136 @@ export default function SettingForm(
           <Typography variant="h6" component={"div"}>
             ボタン設定
           </Typography>
-          <FormControl sx={{ mt: 2 }}>
-            <InputLabel id="button-design-label">ボタンデザイン</InputLabel>
-            <Select
-              labelId="button-design-label"
-              label="ボタンデザイン"
-              name="buttonDesign"
-              value={Setting.buttonDesign}
-              onChange={handleChangeBySelect}
-            >
-              <MenuItem value="text">文字のみ</MenuItem>
-              <MenuItem value="outlined">囲み</MenuItem>
-              <MenuItem value="contained">色付き</MenuItem>
-            </Select>
-            <Accordion sx={{ mt: 1, width: "auto" }}>
-              <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                <Typography component={"span"}>説明</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Button variant="text" color={Setting.buttonColor}>
-                  文字のみ
-                </Button>
-                <Button
-                  variant="outlined"
-                  sx={{ ml: 1 }}
-                  color={Setting.buttonColor}
-                >
-                  囲み
-                </Button>
-                <Button
-                  variant="contained"
-                  sx={{ ml: 1 }}
-                  color={Setting.buttonColor}
-                >
-                  色付き
-                </Button>
-              </AccordionDetails>
-            </Accordion>
-          </FormControl>
-          <FormControl sx={{ mt: 2 }}>
-            <InputLabel id="button-color-label">ボタンカラー</InputLabel>
-            <Select
-              labelId="button-color-label"
-              label="ボタンカラー"
-              name="buttonColor"
-              value={Setting.buttonColor}
-              onChange={handleChangeBySelect}
-            >
-              <MenuItem value="primary">
-                <Typography color="primary">プライマリ</Typography>
-              </MenuItem>
-              <MenuItem value="secondary">
-                <Typography color="secondary">セカンダリ</Typography>
-              </MenuItem>
-              <MenuItem value="error">
-                <Typography color="error">エラー</Typography>
-              </MenuItem>
-              <MenuItem value="info">
-                <Typography color="info">インフォ</Typography>
-              </MenuItem>
-              <MenuItem value="success">
-                <Typography color="success">サクセス</Typography>
-              </MenuItem>
-              <MenuItem value="warning">
-                <Typography color="warning">ワーニング</Typography>
-              </MenuItem>
-            </Select>
-            <Accordion sx={{ mt: 1, width: "auto" }}>
-              <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                <Typography component={"span"}>説明</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Button variant={Setting.buttonDesign} color="primary">
-                  プライマリ
-                </Button>
-                <Button
-                  variant={Setting.buttonDesign}
-                  color="secondary"
-                  sx={{ ml: 1 }}
-                >
-                  セカンダリ
-                </Button>
-                <Button
-                  variant={Setting.buttonDesign}
-                  color="error"
-                  sx={{ ml: 1 }}
-                >
-                  エラー
-                </Button>
-                <Button
-                  variant={Setting.buttonDesign}
-                  color="info"
-                  sx={{ ml: 1 }}
-                >
-                  インフォ
-                </Button>
-                <Button
-                  variant={Setting.buttonDesign}
-                  color="success"
-                  sx={{ ml: 1 }}
-                >
-                  サクセス
-                </Button>
-                <Button
-                  variant={Setting.buttonDesign}
-                  color="warning"
-                  sx={{ ml: 1 }}
-                >
-                  ワーニング
-                </Button>
-              </AccordionDetails>
-            </Accordion>
-          </FormControl>
+          <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
+            <FormControl>
+              <InputLabel id="button-design-label">ボタンデザイン</InputLabel>
+              <Select
+                labelId="button-design-label"
+                label="ボタンデザイン"
+                name="buttonDesign"
+                value={Setting.buttonDesign}
+                onChange={handleChangeBySelect}
+              >
+                <MenuItem value="text">文字のみ</MenuItem>
+                <MenuItem value="outlined">囲み</MenuItem>
+                <MenuItem value="contained">色付き</MenuItem>
+              </Select>
+              <Accordion sx={{ mt: 1, width: "auto" }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography component={"span"}>説明</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Button variant="text" color={Setting.buttonColor}>
+                    文字のみ
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    sx={{ ml: 1 }}
+                    color={Setting.buttonColor}
+                  >
+                    囲み
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ ml: 1 }}
+                    color={Setting.buttonColor}
+                  >
+                    色付き
+                  </Button>
+                </AccordionDetails>
+              </Accordion>
+            </FormControl>
+          </Box>
+          <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
+            <FormControl sx={{ mt: 2 }}>
+              <InputLabel id="button-color-label">ボタンカラー</InputLabel>
+              <Select
+                labelId="button-color-label"
+                label="ボタンカラー"
+                name="buttonColor"
+                value={Setting.buttonColor}
+                onChange={handleChangeBySelect}
+              >
+                <MenuItem value="primary">
+                  <Typography color="primary">青</Typography>
+                </MenuItem>
+                <MenuItem value="secondary">
+                  <Typography color="secondary">紫</Typography>
+                </MenuItem>
+                <MenuItem value="error">
+                  <Typography color="error">赤</Typography>
+                </MenuItem>
+                <MenuItem value="info">
+                  <Typography color="info">水</Typography>
+                </MenuItem>
+                <MenuItem value="success">
+                  <Typography color="success">緑</Typography>
+                </MenuItem>
+                <MenuItem value="warning">
+                  <Typography color="warning">橙</Typography>
+                </MenuItem>
+              </Select>
+              <Accordion sx={{ mt: 1, width: "auto" }}>
+                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                  <Typography component={"span"}>説明</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Box sx={{ display: "flex", flexDirection: "row" }}>
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                      <Button variant={Setting.buttonDesign} color="primary">
+                        青
+                      </Button>
+                    </Box>
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                      <Button
+                        variant={Setting.buttonDesign}
+                        color="secondary"
+                        sx={{ ml: 1 }}
+                      >
+                        紫
+                      </Button>
+                    </Box>
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                      <Button
+                        variant={Setting.buttonDesign}
+                        color="error"
+                        sx={{ ml: 1 }}
+                      >
+                        赤
+                      </Button>
+                    </Box>
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                      <Button
+                        variant={Setting.buttonDesign}
+                        color="info"
+                        sx={{ ml: 1 }}
+                      >
+                        水
+                      </Button>
+                    </Box>
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                      <Button
+                        variant={Setting.buttonDesign}
+                        color="success"
+                        sx={{ ml: 1 }}
+                      >
+                        緑
+                      </Button>
+                    </Box>
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                      <Button
+                        variant={Setting.buttonDesign}
+                        color="warning"
+                        sx={{ ml: 1 }}
+                      >
+                        橙
+                      </Button>
+                    </Box>
+                  </Box>
+                </AccordionDetails>
+              </Accordion>
+            </FormControl>
+          </Box>
         </TabPanel>
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
           <Button type="submit" disabled={isPending} variant="contained">
