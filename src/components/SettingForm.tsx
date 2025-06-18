@@ -64,13 +64,17 @@ export default function SettingForm(
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    Setting[e.target.name as keyof SettingFormProps] = e.target.value as never;
-    setSetting({ ...{}, ...Setting });
+    setSetting({
+      ...Setting,
+      [e.target.name]: e.target.value,
+    });
   }
 
   function handleChangeBySelect(e: SelectChangeEvent<string>) {
-    Setting[e.target.name as keyof SettingFormProps] = e.target.value as never;
-    setSetting({ ...{}, ...Setting });
+    setSetting({
+      ...Setting,
+      [e.target.name]: e.target.value,
+    });
   }
 
   function handleChangeTab(_: React.SyntheticEvent, value: string) {
