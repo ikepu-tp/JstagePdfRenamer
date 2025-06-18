@@ -31,7 +31,7 @@ export function Option(): React.ReactNode {
     setSetting({ ...{}, ...newSetting });
   }
 
-  if (!setting) return;
+  if (!setting) return null;
 
   return <SettingForm {...setting} />;
 }
