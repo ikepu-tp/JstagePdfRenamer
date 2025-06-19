@@ -7,11 +7,13 @@ import {
   Box,
   Button,
   FormControl,
+  FormControlLabel,
   InputLabel,
   MenuItem,
   Paper,
   Select,
   SelectChangeEvent,
+  Switch,
   Tab,
   Table,
   TableBody,
@@ -23,20 +25,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useActionState, useEffect, useState } from "react";
+import React, { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { getFileNameFromTemplate } from "../utils/jstage";
-import {
-  colorType,
-  designType,
-  setSyncStorage,
-  StorageResource,
-} from "../utils/storage";
+import { setSyncStorage, StorageResource } from "../utils/storage";
 
-export type SettingFormProps = {
-  fileNameTemplate: string;
-  buttonDesign: designType;
-  buttonColor: colorType;
-};
+export type SettingFormProps = StorageResource & {};
 export default function SettingForm(
   props: SettingFormProps
 ): React.ReactElement {
@@ -74,6 +67,16 @@ export default function SettingForm(
     setSetting({
       ...Setting,
       [e.target.name]: e.target.value,
+    });
+  }
+
+  function handleChecked(
+    e: ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ): void {
+    setSetting({
+      ...Setting,
+      [e.currentTarget.name]: checked,
     });
   }
 
@@ -302,7 +305,30 @@ export default function SettingForm(
           <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
             表示設定
           </Typography>
-          <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}></Box>
+          <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  name="minimize"
+                  checked={Setting.minimize}
+                  onChange={handleChecked}
+                />
+              }
+              label="最小化"
+            />
+          </Box>
+          <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  name="visible"
+                  checked={Setting.visible}
+                  onChange={handleChecked}
+                />
+              }
+              label="表示"
+            />
+          </Box>
         </TabPanel>
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
           <Button type="submit" disabled={isPending} variant="contained">
