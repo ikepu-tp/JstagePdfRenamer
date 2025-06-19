@@ -14,7 +14,7 @@ import {
   getFileNameUrl,
 } from "./../utils/files";
 
-export default function DownloadArea(): React.ReactElement {
+export default function DownloadArea(): React.ReactNode {
   const [fileName, setFileName] = useState<string>("");
   const fileRef = useRef<FileNameUrl>({ file_name: "", pdf_url: "" });
   const [StorageValue, setStorageValue] = useState<StorageResource>({
@@ -47,9 +47,13 @@ export default function DownloadArea(): React.ReactElement {
       "fileNameTemplate",
       "buttonDesign",
       "buttonColor",
+      "minimize",
+      "visible",
     ]);
     setStorageValue({ ...{}, ...storage });
   }
+
+  if (!StorageValue.visible) return;
   return (
     <Box
       sx={{
