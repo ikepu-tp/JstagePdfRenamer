@@ -117,7 +117,7 @@ export default function DownloadArea(): React.ReactNode {
             display: "flex",
             flexDirection: "column",
             flexGrow: 1,
-            pt: 2,
+            pt: 1,
             pl: 2,
           }}
         >
@@ -164,9 +164,11 @@ export default function DownloadArea(): React.ReactNode {
     </div>
   );
 }
+
 type MinimizeDownloadAreaProps = {
   toggleMinimize: () => void;
 };
+
 function MinimizeDownloadArea(
   props: MinimizeDownloadAreaProps
 ): React.ReactNode {

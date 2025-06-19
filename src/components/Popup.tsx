@@ -27,13 +27,11 @@ export default function Popup(): React.ReactNode {
   }
 
   return (
-    <Box sx={{ padding: 1 }}>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        {Setting && <PopupVisibility {...Setting} />}
-        <Button type="button" variant="contained" onClick={openSetting}>
-          設定を開く
-        </Button>
-      </Box>
+    <Box sx={{ padding: 1, mx: "auto" }}>
+      {Setting && <PopupVisibility {...Setting} />}
+      <Button type="button" variant="contained" onClick={openSetting}>
+        設定を開く
+      </Button>
     </Box>
   );
 }
