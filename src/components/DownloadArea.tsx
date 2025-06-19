@@ -40,6 +40,13 @@ export default function DownloadArea(): React.ReactNode {
   useEffect(() => {
     getFile();
     getStorage();
+    chrome.storage.onChanged.addListener((changes) => {
+      for (const [key, { newValue }] of Object.entries(changes)) {
+        console.debug(key, newValue);
+        StorageValue[key] = newValue;
+        setStorageValue({ ...{}, ...StorageValue });
+      }
+    });
   }, []);
 
   function handleChangeFileName(e: ChangeEvent<HTMLInputElement>) {
