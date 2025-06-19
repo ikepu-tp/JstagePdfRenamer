@@ -28,8 +28,8 @@ export function Option(): React.ReactNode {
       fileNameTemplate: storage.fileNameTemplate || DEFAULT_FILE_NAME_TEMPLATE,
       buttonDesign: storage.buttonDesign || DEFAULT_BUTTON_DESIGN,
       buttonColor: storage.buttonColor || DEFAULT_BUTTON_COLOR,
-      minimize: storage.minimize || false,
-      visible: storage.visible || true,
+      minimize: storage.minimize === undefined ? false : storage.minimize,
+      visible: storage.visible === undefined ? true : storage.visible,
     };
 
     setSetting({ ...{}, ...newSetting });
