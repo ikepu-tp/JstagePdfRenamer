@@ -28,7 +28,7 @@ import { getFileNameFromTemplate } from "../utils/jstage";
 import { setSyncStorage, StorageResource } from "../utils/storage";
 import Visibility from "./Visibility";
 
-export type SettingFormProps = StorageResource & {};
+export type SettingFormProps = StorageResource;
 export default function SettingForm(
   props: SettingFormProps
 ): React.ReactElement {
