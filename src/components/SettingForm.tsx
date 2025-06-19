@@ -7,13 +7,11 @@ import {
   Box,
   Button,
   FormControl,
-  FormControlLabel,
   InputLabel,
   MenuItem,
   Paper,
   Select,
   SelectChangeEvent,
-  Switch,
   Tab,
   Table,
   TableBody,
@@ -28,6 +26,7 @@ import {
 import React, { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { getFileNameFromTemplate } from "../utils/jstage";
 import { setSyncStorage, StorageResource } from "../utils/storage";
+import Visibility from "./Visibility";
 
 export type SettingFormProps = StorageResource & {};
 export default function SettingForm(
@@ -305,30 +304,10 @@ export default function SettingForm(
           <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
             表示設定
           </Typography>
-          <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
-            <FormControlLabel
-              control={
-                <Switch
-                  name="minimize"
-                  checked={Setting.minimize}
-                  onChange={handleChecked}
-                />
-              }
-              label="最小化"
-            />
-          </Box>
-          <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
-            <FormControlLabel
-              control={
-                <Switch
-                  name="visible"
-                  checked={Setting.visible}
-                  onChange={handleChecked}
-                />
-              }
-              label="表示"
-            />
-          </Box>
+          <Visibility
+            Setting={{ minimize: Setting.minimize, visible: Setting.visible }}
+            handleChecked={handleChecked}
+          />
         </TabPanel>
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
           <Button type="submit" disabled={isPending} variant="contained">
