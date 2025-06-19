@@ -43,8 +43,10 @@ function PopupVisibility(props: VisibilitySettingResource): React.ReactNode {
     chrome.storage.onChanged.addListener((changes) => {
       for (const [key, { newValue }] of Object.entries(changes)) {
         console.debug(key, newValue);
-        Setting[key as keyof VisibilitySettingResource] = newValue;
-        setSetting({ ...{}, ...Setting });
+        setSetting((prevSetting) => ({
+          ...prevSetting,
+          [key as keyof VisibilitySettingResource]: newValue,
+        }));
       }
     });
   }, []);

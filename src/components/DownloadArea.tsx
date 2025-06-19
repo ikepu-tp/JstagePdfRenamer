@@ -30,7 +30,7 @@ import {
 
 export default function DownloadArea(): React.ReactNode {
   const [fileName, setFileName] = useState<string>("");
-  const [isMaximum, setIsMaximum] = useState<boolean>(false);
+  const [IsMaximum, setIsMaximum] = useState<boolean>(false);
   const fileRef = useRef<FileNameUrl>({ file_name: "", pdf_url: "" });
   const [StorageValue, setStorageValue] = useState<StorageResource>({
     ...{},
@@ -43,8 +43,10 @@ export default function DownloadArea(): React.ReactNode {
     chrome.storage.onChanged.addListener((changes) => {
       for (const [key, { newValue }] of Object.entries(changes)) {
         console.debug(key, newValue);
-        StorageValue[key] = newValue;
-        setStorageValue({ ...{}, ...StorageValue });
+        setStorageValue((prevStorageValue) => ({
+          ...prevStorageValue,
+          [key]: newValue,
+        }));
       }
     });
   }, []);
@@ -65,7 +67,7 @@ export default function DownloadArea(): React.ReactNode {
   }
 
   function toggleMaximum(): void {
-    setIsMaximum(!isMaximum);
+    setIsMaximum(!IsMaximum);
   }
 
   function toggleVisible(): void {
@@ -107,8 +109,8 @@ export default function DownloadArea(): React.ReactNode {
         border: "1px solid gray",
         borderRadius: "5px",
         minWidth: "300px",
-        width: isMaximum ? "100vw" : "fit-content",
-        maxWidth: isMaximum ? "100vw" : "500px",
+        width: IsMaximum ? "100vw" : "fit-content",
+        maxWidth: IsMaximum ? "100vw" : "500px",
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -126,7 +128,7 @@ export default function DownloadArea(): React.ReactNode {
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <ButtonGroup variant="text">
             <Button type="button" onClick={toggleMaximum}>
-              {isMaximum ? <CloseFullscreenIcon /> : <OpenInFullIcon />}
+              {IsMaximum ? <CloseFullscreenIcon /> : <OpenInFullIcon />}
             </Button>
             <Button type="button" onClick={toggleMinimize}>
               <MinimizeIcon />

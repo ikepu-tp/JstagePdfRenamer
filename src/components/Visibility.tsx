@@ -23,7 +23,7 @@ export default function Visibility({
           control={
             <Switch
               name="minimize"
-              checked={Setting.minimize}
+              checked={Setting.minimize ?? false}
               onChange={handleChecked}
             />
           }
@@ -35,7 +35,7 @@ export default function Visibility({
           control={
             <Switch
               name="visible"
-              checked={Setting.visible}
+              checked={Setting.visible ?? true}
               onChange={handleChecked}
             />
           }
