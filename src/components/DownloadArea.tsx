@@ -1,5 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
+import MinimizeIcon from "@mui/icons-material/Minimize";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import {
   Box,
@@ -29,6 +30,7 @@ import {
 
 export default function DownloadArea(): React.ReactNode {
   const [fileName, setFileName] = useState<string>("");
+  const [isMaximum, setIsMaximum] = useState<boolean>(false);
   const fileRef = useRef<FileNameUrl>({ file_name: "", pdf_url: "" });
   const [StorageValue, setStorageValue] = useState<StorageResource>({
     ...{},
@@ -53,6 +55,10 @@ export default function DownloadArea(): React.ReactNode {
     const fileNameUrl = await getFileNameUrl();
     setFileName(fileNameUrl.file_name);
     fileRef.current = fileNameUrl;
+  }
+
+  function toggleMaximum(): void {
+    setIsMaximum(!isMaximum);
   }
 
   function toggleVisible(): void {
@@ -83,8 +89,8 @@ export default function DownloadArea(): React.ReactNode {
     return <MinimizeDownloadArea toggleMinimize={toggleMinimize} />;
 
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         padding: 0,
         position: "fixed",
         right: 0,
@@ -94,8 +100,8 @@ export default function DownloadArea(): React.ReactNode {
         border: "1px solid gray",
         borderRadius: "5px",
         minWidth: "300px",
-        width: "fit-content",
-        maxWidth: "500px",
+        width: isMaximum ? "100vw" : "fit-content",
+        maxWidth: isMaximum ? "100vw" : "500px",
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -112,8 +118,11 @@ export default function DownloadArea(): React.ReactNode {
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <ButtonGroup variant="text">
+            <Button type="button" onClick={toggleMaximum}>
+              {isMaximum ? <CloseFullscreenIcon /> : <OpenInFullIcon />}
+            </Button>
             <Button type="button" onClick={toggleMinimize}>
-              <CloseFullscreenIcon />
+              <MinimizeIcon />
             </Button>
             <Button type="button" onClick={toggleVisible}>
               <CloseIcon />
@@ -145,10 +154,9 @@ export default function DownloadArea(): React.ReactNode {
           PDFをダウンロード
         </Button>
       </Box>
-    </Box>
+    </div>
   );
 }
-
 type MinimizeDownloadAreaProps = {
   toggleMinimize: () => void;
 };
