@@ -98,15 +98,28 @@ export default function DownloadArea(): React.ReactNode {
         maxWidth: "500px",
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <ButtonGroup variant="text">
-          <Button type="button" onClick={toggleMinimize}>
-            <CloseFullscreenIcon />
-          </Button>
-          <Button type="button" onClick={toggleVisible}>
-            <CloseIcon />
-          </Button>
-        </ButtonGroup>
+      <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            pt: 2,
+            pl: 2,
+          }}
+        >
+          名前を付けて保存
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <ButtonGroup variant="text">
+            <Button type="button" onClick={toggleMinimize}>
+              <CloseFullscreenIcon />
+            </Button>
+            <Button type="button" onClick={toggleVisible}>
+              <CloseIcon />
+            </Button>
+          </ButtonGroup>
+        </Box>
       </Box>
       <Box sx={{ padding: 2 }}>
         <FormControl sx={{ display: "block", mb: 1 }}>
