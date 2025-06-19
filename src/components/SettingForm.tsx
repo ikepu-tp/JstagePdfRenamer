@@ -23,20 +23,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useActionState, useEffect, useState } from "react";
+import React, { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { getFileNameFromTemplate } from "../utils/jstage";
-import {
-  colorType,
-  designType,
-  setSyncStorage,
-  StorageResource,
-} from "../utils/storage";
+import { setSyncStorage, StorageResource } from "../utils/storage";
+import Visibility from "./Visibility";
 
-export type SettingFormProps = {
-  fileNameTemplate: string;
-  buttonDesign: designType;
-  buttonColor: colorType;
-};
+export type SettingFormProps = StorageResource;
 export default function SettingForm(
   props: SettingFormProps
 ): React.ReactElement {
@@ -77,6 +69,16 @@ export default function SettingForm(
     });
   }
 
+  function handleChecked(
+    e: ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ): void {
+    setSetting({
+      ...Setting,
+      [e.currentTarget.name]: checked,
+    });
+  }
+
   function handleChangeTab(_: React.SyntheticEvent, value: string) {
     setTabValue(value);
   }
@@ -112,9 +114,10 @@ export default function SettingForm(
         <Tabs value={TabValue} onChange={handleChangeTab}>
           <Tab value={"fileName"} label="ファイル名" />
           <Tab value={"button"} label="ボタン" />
+          <Tab value={"visibility"} label="表示" />
         </Tabs>
         <TabPanel value={"fileName"}>
-          <Typography variant="h6" component={"div"}>
+          <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
             ファイル名設定
           </Typography>
           <FormControl>
@@ -163,7 +166,7 @@ export default function SettingForm(
           </FormControl>
         </TabPanel>
         <TabPanel value={"button"}>
-          <Typography variant="h6" component={"div"}>
+          <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
             ボタン設定
           </Typography>
           <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
@@ -296,6 +299,15 @@ export default function SettingForm(
               </Accordion>
             </FormControl>
           </Box>
+        </TabPanel>
+        <TabPanel value={"visibility"}>
+          <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
+            表示設定
+          </Typography>
+          <Visibility
+            Setting={{ minimize: Setting.minimize, visible: Setting.visible }}
+            handleChecked={handleChecked}
+          />
         </TabPanel>
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
           <Button type="submit" disabled={isPending} variant="contained">

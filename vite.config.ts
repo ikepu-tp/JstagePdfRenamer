@@ -13,4 +13,12 @@ export default defineConfig({
     },
     port: 3000,
   },
+  build: {
+    rollupOptions: {
+      input: {
+        popup: "src/html/popup.html",
+        options: "src/html/options.html", // ←これ重要！
+      },
+    },
+  },
 });

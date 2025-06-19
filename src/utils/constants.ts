@@ -7,4 +7,6 @@ export const DEFAULT_STORAGE: StorageResource = {
   fileNameTemplate: DEFAULT_FILE_NAME_TEMPLATE,
   buttonDesign: DEFAULT_BUTTON_DESIGN,
   buttonColor: DEFAULT_BUTTON_COLOR,
+  minimize: false,
+  visible: true,
 };

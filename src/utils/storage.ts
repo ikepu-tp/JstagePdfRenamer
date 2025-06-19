@@ -16,6 +16,8 @@ export type StorageResource<
     fileNameTemplate?: string;
     buttonDesign?: designType;
     buttonColor?: colorType;
+    minimize?:boolean
+    visible?: boolean;
   };
 
 /**
