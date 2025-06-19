@@ -112,9 +112,10 @@ export default function SettingForm(
         <Tabs value={TabValue} onChange={handleChangeTab}>
           <Tab value={"fileName"} label="ファイル名" />
           <Tab value={"button"} label="ボタン" />
+          <Tab value={"visibility"} label="表示" />
         </Tabs>
         <TabPanel value={"fileName"}>
-          <Typography variant="h6" component={"div"}>
+          <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
             ファイル名設定
           </Typography>
           <FormControl>
@@ -163,7 +164,7 @@ export default function SettingForm(
           </FormControl>
         </TabPanel>
         <TabPanel value={"button"}>
-          <Typography variant="h6" component={"div"}>
+          <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
             ボタン設定
           </Typography>
           <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
@@ -296,6 +297,12 @@ export default function SettingForm(
               </Accordion>
             </FormControl>
           </Box>
+        </TabPanel>
+        <TabPanel value={"visibility"}>
+          <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
+            表示設定
+          </Typography>
+          <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}></Box>
         </TabPanel>
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
           <Button type="submit" disabled={isPending} variant="contained">
