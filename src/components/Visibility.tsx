@@ -1,11 +1,12 @@
 import { Box, FormControlLabel, Switch } from "@mui/material";
 import React from "react";
 
+export type VisibilitySettingResource = {
+  minimize?: boolean;
+  visible?: boolean;
+};
 export type VisibilityProps = {
-  Setting: {
-    minimize?: boolean;
-    visible?: boolean;
-  };
+  Setting: VisibilitySettingResource;
   handleChecked: (
     event: React.ChangeEvent<HTMLInputElement>,
     checked: boolean
