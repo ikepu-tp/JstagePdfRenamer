@@ -8,7 +8,8 @@
   "permissions": ["activeTab", "scripting", "storage"],
   "action": {
     "default_icon": "img/logo16.png",
-    "default_title": "ダウンロード"
+    "default_title": "ダウンロード",
+    "default_popup": "src/html/popup.html"
   },
   "icons": {
     "16": "img/logo16.png",
