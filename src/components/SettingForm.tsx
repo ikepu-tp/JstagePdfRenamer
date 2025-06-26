@@ -43,9 +43,13 @@ export default function SettingForm(
   }, null);
 
   useEffect(() => {
-    chrome.storage.onChanged.addListener(() => {
+    const handleStorageChange = () => {
       setOpenNotification(true);
-    });
+    };
+    chrome.storage.onChanged.addListener(handleStorageChange);
+    return () => {
+      chrome.storage.onChanged.removeListener(handleStorageChange);
+    };
   }, []);
 
   useEffect(() => {
