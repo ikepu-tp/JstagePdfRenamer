@@ -1,9 +1,9 @@
 {
   "name": "JstagePDFRenamer",
   "short_name": "PDFRenamer",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "manifest_version": 3,
-  "description": "J-STAGEでPDFを「著者名（刊行年）タイトル」という名前でダウンロードします。",
+  "description": "J-STAGEでPDFを設定した名前でダウンロードします。",
   "homepage_url": "https://github.com/ikepu-tp/JstagePdfRenamer",
   "permissions": ["activeTab", "scripting", "storage"],
   "action": {
