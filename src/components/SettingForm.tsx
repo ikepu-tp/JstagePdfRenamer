@@ -26,20 +26,27 @@ import {
 import React, { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { getFileNameFromTemplate } from "../utils/jstage";
 import { setSyncStorage, StorageResource } from "../utils/storage";
+import SuccessedNotification from "./SuccessedNotification";
 import Visibility from "./Visibility";
 
 export type SettingFormProps = StorageResource;
 export default function SettingForm(
   props: SettingFormProps
 ): React.ReactElement {
+  const [Setting, setSetting] = useState<StorageResource>(props);
+  const [exampleFileName, setExampleFileName] = useState<string>("");
+  const [TabValue, setTabValue] = useState<string>("fileName");
+  const [openNotification, setOpenNotification] = useState<boolean>(false);
   const [, action, isPending] = useActionState<null>(async (data) => {
     setSyncStorage(Setting);
     return data;
   }, null);
 
-  const [Setting, setSetting] = useState<StorageResource>(props);
-  const [exampleFileName, setExampleFileName] = useState<string>("");
-  const [TabValue, setTabValue] = useState<string>("fileName");
+  useEffect(() => {
+    chrome.storage.onChanged.addListener(() => {
+      setOpenNotification(true);
+    });
+  }, []);
 
   useEffect(() => {
     getExampleFileName(Setting.fileNameTemplate);
@@ -314,6 +321,11 @@ export default function SettingForm(
             保存
           </Button>
         </Box>
+        <SuccessedNotification
+          open={openNotification}
+          setOpen={setOpenNotification}
+          message="設定を保存しました。"
+        />
       </Box>
     </Paper>
   );
