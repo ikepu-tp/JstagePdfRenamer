@@ -43,9 +43,6 @@ export default function SettingForm(
   }, null);
 
   useEffect(() => {
-    const handleStorageChange = () => {
-      setOpenNotification(true);
-    };
     chrome.storage.onChanged.addListener(handleStorageChange);
     return () => {
       chrome.storage.onChanged.removeListener(handleStorageChange);
@@ -55,6 +52,10 @@ export default function SettingForm(
   useEffect(() => {
     getExampleFileName(Setting.fileNameTemplate);
   }, [Setting.fileNameTemplate]);
+
+  function handleStorageChange(): void {
+    setOpenNotification(true);
+  }
 
   async function getExampleFileName(name: string | undefined): Promise<void> {
     const fileName = await getFileNameFromTemplate({
