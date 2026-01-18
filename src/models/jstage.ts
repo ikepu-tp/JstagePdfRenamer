@@ -78,7 +78,7 @@ export function getJournalTitleFromJstage(): string {
  * 巻取得
  *
  * @export
- * @return {*}  {string}
+ * @return {string}
  */
 export function getVolumeFromJstage(): string {
   const volume_element = document.getElementsByName(

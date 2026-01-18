@@ -114,6 +114,12 @@ export async function makeFileName({
         publication_date.getMonth() + 1
       }月${publication_date.getDate()}日`,
     );
+  } else {
+    fileNameTemplate = fileNameTemplate.replace(/%year%/g, "Unknown Year");
+    fileNameTemplate = fileNameTemplate.replace(
+      /%publication_date%/g,
+      "Unknown Publication Date",
+    );
   }
 
   // 雑誌名
