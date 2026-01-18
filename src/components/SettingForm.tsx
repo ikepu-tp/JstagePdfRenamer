@@ -6,7 +6,6 @@ import SuccessedNotification from "./SuccessedNotification";
 import ButtonColorInput from "./inputs/ButtonColorInput";
 import ButtonInput from "./inputs/ButtonInput";
 import FileNameInput from "./inputs/FileNameInput";
-import MinimizeSwitch from "./inputs/MinimizeSwitch";
 import VisibleSwitch from "./inputs/VisibleSwitch";
 
 export type SettingFormProps = {
@@ -109,7 +108,12 @@ export default function SettingForm(
           <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
             <form.Field
               name="buttonColor"
-              children={(field) => <ButtonColorInput field={field} />}
+              children={(field) => (
+                <ButtonColorInput
+                  field={field}
+                  buttonDesign={form.state.values.buttonDesign}
+                />
+              )}
             />
           </Box>
         </TabPanel>
@@ -120,13 +124,15 @@ export default function SettingForm(
           <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
             <form.Field
               name="minimize"
-              children={(field) => <MinimizeSwitch field={field} />}
+              children={(field) => (
+                <VisibleSwitch field={field} label="最小化" />
+              )}
             />
           </Box>
           <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
             <form.Field
               name="visible"
-              children={(field) => <VisibleSwitch field={field} />}
+              children={(field) => <VisibleSwitch field={field} label="表示" />}
             />
           </Box>
         </TabPanel>

@@ -16,14 +16,14 @@ import React from "react";
 import { AnyFieldApi } from "@tanstack/react-form";
 import { colorType, designType } from "../../utils/storage";
 
-export type buttonColorInputProps = {
+export type ButtonColorInputProps = {
   field: AnyFieldApi;
   buttonDesign?: designType;
 };
 export default function ButtonColorInput({
   field,
   buttonDesign,
-}: buttonColorInputProps): React.ReactElement {
+}: ButtonColorInputProps): React.ReactElement {
   return (
     <FormControl sx={{ mt: 2 }}>
       <InputLabel id="button-color-label">ボタンカラー</InputLabel>

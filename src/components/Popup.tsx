@@ -2,7 +2,6 @@ import { Box, Button } from "@mui/material";
 import { useForm } from "@tanstack/react-form";
 import React, { useEffect, useState } from "react";
 import { getSyncStorage, setSyncStorage } from "../utils/storage";
-import MinimizeSwitch from "./inputs/MinimizeSwitch";
 import VisibleSwitch from "./inputs/VisibleSwitch";
 
 export type VisibilitySettingResource = {
@@ -47,7 +46,6 @@ function PopupVisibility(props: {
 }): React.ReactNode {
   const form = useForm({
     defaultValues: {
-      ...{},
       ...props.setting,
     },
     listeners: {
@@ -58,28 +56,33 @@ function PopupVisibility(props: {
   });
 
   useEffect(() => {
-    chrome.storage.onChanged.addListener((changes) => {
+    const listener = (changes: {
+      [key: string]: chrome.storage.StorageChange;
+    }) => {
       for (const [key, { newValue }] of Object.entries(changes)) {
         if (key !== "visible" && key !== "minimize") continue;
         console.debug(key, newValue);
         form.setFieldValue(key, newValue);
       }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    };
+    chrome.storage.onChanged.addListener(listener);
+    return () => {
+      chrome.storage.onChanged.removeListener(listener);
+    };
+  }, [form]);
 
   return (
     <form>
       <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
         <form.Field
           name="minimize"
-          children={(field) => <MinimizeSwitch field={field} />}
+          children={(field) => <VisibleSwitch field={field} label="最小化" />}
         />
       </Box>
       <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
         <form.Field
           name="visible"
-          children={(field) => <VisibleSwitch field={field} />}
+          children={(field) => <VisibleSwitch field={field} label="表示" />}
         />
       </Box>
     </form>
