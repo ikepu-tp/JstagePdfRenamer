@@ -7,7 +7,7 @@ chrome.action.onClicked.addListener(() => {
   openOptionsPage();
 });
 chrome.runtime.onInstalled.addListener(({ reason }) => {
-  const openUrl = "https://ikepu-tp.com/jstagepdfrenamer-update-v1-2-0/";
+  const openUrl = "https://ikepu-tp.com/jstagepdfrenamer-update-v1-3-0/";
   if (["update", "install"].includes(reason)) {
     chrome.tabs.create({ url: openUrl });
     openOptionsPage();
