@@ -88,3 +88,18 @@ export function getVolumeFromJstage(): string {
   if (!volume_element[0]) return "Unknown Volume";
   return volume_element[0].content;
 }
+
+/**
+ * 号取得
+ *
+ * @return {*}  {(string | undefined)}
+ */
+export function getIssueFromJstage(): string {
+  const issue_element = document.getElementsByName(
+    "citation_issue",
+  ) as NodeListOf<HTMLMetaElement>;
+
+  if (!issue_element[0]) return "Unknown Issue";
+
+  return issue_element[0].content;
+}

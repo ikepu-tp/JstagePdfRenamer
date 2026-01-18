@@ -1,5 +1,6 @@
 import {
   getAuthorsFromJstage,
+  getIssueFromJstage,
   getJournalTitleFromJstage,
   getPdfUrlFromJstage,
   getPublicationDateFromJstage,
@@ -28,6 +29,7 @@ export async function getFileMeta(): Promise<FileMeta> {
   let publication_date: Date | undefined;
   let fileNameTemplate: string | undefined;
   let journalTitle: string | undefined;
+  let issue: string | undefined;
   let volume: string | undefined;
 
   if (isTest()) {
@@ -46,6 +48,7 @@ export async function getFileMeta(): Promise<FileMeta> {
     publication_date = getPublicationDateFromJstage();
     journalTitle = getJournalTitleFromJstage();
     volume = getVolumeFromJstage();
+    issue = getIssueFromJstage();
   }
 
   return {
@@ -56,6 +59,7 @@ export async function getFileMeta(): Promise<FileMeta> {
       fileNameTemplate,
       journalTitle,
       volume,
+      issue,
     }),
     pdf_url,
   };
@@ -68,6 +72,7 @@ export type MakeFileNameProps = {
   fileNameTemplate?: string;
   journalTitle?: string;
   volume?: string;
+  issue?: string;
 };
 export async function makeFileName({
   authors,
@@ -76,6 +81,7 @@ export async function makeFileName({
   fileNameTemplate,
   journalTitle,
   volume,
+  issue,
 }: MakeFileNameProps): Promise<string> {
   // ファイル名テンプレート
   if (!fileNameTemplate)
@@ -130,6 +136,12 @@ export async function makeFileName({
 
   // 巻
   fileNameTemplate = fileNameTemplate.replace(/%volume%/g, volume || "");
+
+  // 号
+  fileNameTemplate = fileNameTemplate.replace(
+    /%issue%/g,
+    issue || "Unknown Issue",
+  );
 
   return fileNameTemplate;
 }
