@@ -4,8 +4,11 @@ import React, { useEffect, useState } from "react";
 import { getSyncStorage, setSyncStorage } from "../utils/storage";
 import MinimizeSwitch from "./inputs/MinimizeSwitch";
 import VisibleSwitch from "./inputs/VisibleSwitch";
-import { VisibilitySettingResource } from "./Visibility";
 
+export type VisibilitySettingResource = {
+  minimize?: boolean;
+  visible?: boolean;
+};
 export default function Popup(): React.ReactNode {
   const [Setting, setSetting] = useState<
     VisibilitySettingResource | undefined
