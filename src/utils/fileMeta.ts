@@ -1,5 +1,6 @@
 import {
   getAuthorsFromJstage,
+  getIssueFromJstage,
   getJournalTitleFromJstage,
   getPdfUrlFromJstage,
   getPublicationDateFromJstage,
@@ -27,6 +28,7 @@ export async function getFileMeta(): Promise<FileMeta> {
   let publication_date: Date | undefined;
   let fileNameTemplate: string | undefined;
   let journalTitle: string | undefined;
+  let issue: string | undefined;
 
   if (isTest()) {
     pdf_url =
@@ -41,6 +43,7 @@ export async function getFileMeta(): Promise<FileMeta> {
     title = getTitleFromJstage();
     publication_date = getPublicationDateFromJstage();
     journalTitle = getJournalTitleFromJstage();
+    issue = getIssueFromJstage();
   }
 
   return {
@@ -50,6 +53,7 @@ export async function getFileMeta(): Promise<FileMeta> {
       publication_date,
       fileNameTemplate,
       journalTitle,
+      issue,
     }),
     pdf_url,
   };
@@ -61,6 +65,7 @@ export type MakeFileNameProps = {
   publication_date?: Date;
   fileNameTemplate?: string;
   journalTitle?: string;
+  issue?: string;
 };
 export async function makeFileName({
   authors,
@@ -68,6 +73,7 @@ export async function makeFileName({
   publication_date,
   fileNameTemplate,
   journalTitle,
+  issue,
 }: MakeFileNameProps): Promise<string> {
   // ファイル名テンプレート
   if (!fileNameTemplate)
@@ -110,6 +116,12 @@ export async function makeFileName({
   fileNameTemplate = fileNameTemplate.replace(
     /%journal_title%/g,
     journalTitle || "Unknown Journal",
+  );
+
+  // 号
+  fileNameTemplate = fileNameTemplate.replace(
+    /%issue%/g,
+    issue || "Unknown Issue",
   );
 
   return fileNameTemplate;

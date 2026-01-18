@@ -73,3 +73,18 @@ export function getJournalTitleFromJstage(): string {
   if (!journal_title_element[0]) return "Unknown Journal";
   return journal_title_element[0].content;
 }
+
+/**
+ * 号取得
+ *
+ * @export
+ * @return {*}  {(string | undefined)}
+ */
+export function getIssueFromJstage(): string | undefined {
+  const issue_element = document.getElementsByName(
+    "citation_issue",
+  ) as NodeListOf<HTMLMetaElement>;
+
+  if (!issue_element[0]) return undefined;
+  return issue_element[0].content;
+}
