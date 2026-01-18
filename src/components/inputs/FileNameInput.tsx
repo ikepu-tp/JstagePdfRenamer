@@ -28,6 +28,11 @@ const variables: { key: string; description: string }[] = [
   { key: "%year%", description: "発行年" },
   { key: "%title%", description: "論文タイトル" },
   { key: "%journal_title%", description: "雑誌名" },
+  {
+    key: "%publication_date%",
+    description: "発行日（日本語の日付形式：YYYY年MM月DD日）",
+  },
+  { key: "%volume%", description: "巻" },
   { key: "%issue%", description: "号" },
 ];
 export default function FileNameInput({

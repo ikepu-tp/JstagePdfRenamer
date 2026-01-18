@@ -75,6 +75,21 @@ export function getJournalTitleFromJstage(): string {
 }
 
 /**
+ * 巻取得
+ *
+ * @export
+ * @return {string}
+ */
+export function getVolumeFromJstage(): string {
+  const volume_element = document.getElementsByName(
+    "citation_volume",
+  ) as NodeListOf<HTMLMetaElement>;
+
+  if (!volume_element[0]) return "Unknown Volume";
+  return volume_element[0].content;
+}
+
+/**
  * 号取得
  *
  * @return {*}  {(string | undefined)}

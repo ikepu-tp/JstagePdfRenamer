@@ -5,6 +5,7 @@ import {
   getPdfUrlFromJstage,
   getPublicationDateFromJstage,
   getTitleFromJstage,
+  getVolumeFromJstage,
 } from "../models/jstage";
 import { isJstage, isTest } from "../models/model";
 import { DEFAULT_FILE_NAME_TEMPLATE } from "./constants";
@@ -29,6 +30,7 @@ export async function getFileMeta(): Promise<FileMeta> {
   let fileNameTemplate: string | undefined;
   let journalTitle: string | undefined;
   let issue: string | undefined;
+  let volume: string | undefined;
 
   if (isTest()) {
     pdf_url =
@@ -36,6 +38,8 @@ export async function getFileMeta(): Promise<FileMeta> {
     authors = ["ikepu-tp"];
     title = "JstagePDFRenamer_cm";
     publication_date = new Date("2024-09-01");
+    journalTitle = "JstagePDFRenamer Test Journal";
+    volume = "1";
   }
   if (isJstage()) {
     pdf_url = getPdfUrlFromJstage();
@@ -43,6 +47,7 @@ export async function getFileMeta(): Promise<FileMeta> {
     title = getTitleFromJstage();
     publication_date = getPublicationDateFromJstage();
     journalTitle = getJournalTitleFromJstage();
+    volume = getVolumeFromJstage();
     issue = getIssueFromJstage();
   }
 
@@ -53,6 +58,7 @@ export async function getFileMeta(): Promise<FileMeta> {
       publication_date,
       fileNameTemplate,
       journalTitle,
+      volume,
       issue,
     }),
     pdf_url,
@@ -65,6 +71,7 @@ export type MakeFileNameProps = {
   publication_date?: Date;
   fileNameTemplate?: string;
   journalTitle?: string;
+  volume?: string;
   issue?: string;
 };
 export async function makeFileName({
@@ -73,6 +80,7 @@ export async function makeFileName({
   publication_date,
   fileNameTemplate,
   journalTitle,
+  volume,
   issue,
 }: MakeFileNameProps): Promise<string> {
   // ファイル名テンプレート
@@ -99,16 +107,24 @@ export async function makeFileName({
   );
 
   // 発行日
-  fileNameTemplate = fileNameTemplate.replace(
-    /%publication_date%/g,
-    publication_date?.toLocaleString("ja-JP") ?? "",
-  );
 
   // publication_date is a Date object or string, so we need to format it
   if (publication_date instanceof Date) {
     fileNameTemplate = fileNameTemplate.replace(
       /%year%/g,
       publication_date.getFullYear().toString(),
+    );
+    fileNameTemplate = fileNameTemplate.replace(
+      /%publication_date%/g,
+      `${publication_date.getFullYear()}年${
+        publication_date.getMonth() + 1
+      }月${publication_date.getDate()}日`,
+    );
+  } else {
+    fileNameTemplate = fileNameTemplate.replace(/%year%/g, "Unknown Year");
+    fileNameTemplate = fileNameTemplate.replace(
+      /%publication_date%/g,
+      "Unknown Publication Date",
     );
   }
 
@@ -117,6 +133,9 @@ export async function makeFileName({
     /%journal_title%/g,
     journalTitle || "Unknown Journal",
   );
+
+  // 巻
+  fileNameTemplate = fileNameTemplate.replace(/%volume%/g, volume || "");
 
   // 号
   fileNameTemplate = fileNameTemplate.replace(
