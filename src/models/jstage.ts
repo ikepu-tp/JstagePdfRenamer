@@ -23,17 +23,9 @@ export function getPdfUrlFromJstage(): string {
 export function getAuthorsFromJstage(): string[] {
   const authors_element = document.getElementsByName(
     "authors",
-  ) as unknown as HTMLMetaElement[];
+  ) as NodeListOf<HTMLMetaElement>;
 
-  // authors
-  const authors: string[] = [];
-  for (let i = 0; i < authors_element.length; ++i) {
-    const author_name = authors_element[i]
-      ? authors_element[i].content
-      : "Unknown";
-    authors.push(author_name);
-  }
-  return authors;
+  return Array.from(authors_element).map((el) => el.content || "Unknown");
 }
 
 /**

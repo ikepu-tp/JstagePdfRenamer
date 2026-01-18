@@ -1,9 +1,7 @@
 export function isJstage(): boolean {
-  return window.location.href.match(
-    /https:\/\/www.jstage.jst.go.jp\/article\/[^\S]*/
-  )
-    ? true
-    : false;
+  return window.location.href.startsWith(
+    "https://www.jstage.jst.go.jp/article/",
+  );
 }
 
 export function isTest(): boolean {

@@ -83,7 +83,7 @@ export async function makeFileName({
   );
   fileNameTemplate = fileNameTemplate.replace(
     /%publication_date%/g,
-    (publication_date || "")?.toLocaleString("ja-JP"),
+    publication_date?.toLocaleString("ja-JP") ?? "",
   );
 
   // publication_date is a Date object or string, so we need to format it
