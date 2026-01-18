@@ -19,6 +19,11 @@ export type ButtonInputProps = {
   field: AnyFieldApi;
   buttonColor?: colorType;
 };
+const designOptions: { name: designType; label: string }[] = [
+  { name: "text", label: "文字のみ" },
+  { name: "outlined", label: "囲み" },
+  { name: "contained", label: "色付き" },
+];
 export default function ButtonInput({
   field,
   buttonColor,
@@ -41,15 +46,17 @@ export default function ButtonInput({
           <Typography component={"span"}>説明</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Button variant="text" color={buttonColor}>
-            文字のみ
-          </Button>
-          <Button variant="outlined" sx={{ ml: 1 }} color={buttonColor}>
-            囲み
-          </Button>
-          <Button variant="contained" sx={{ ml: 1 }} color={buttonColor}>
-            色付き
-          </Button>
+          {designOptions.map((option) => (
+            <Button
+              key={option.name}
+              variant={option.name as designType}
+              sx={{ mr: 1 }}
+              color={buttonColor}
+              onClick={() => field.handleChange(option.name)}
+            >
+              {option.label}
+            </Button>
+          ))}
         </AccordionDetails>
       </Accordion>
     </FormControl>

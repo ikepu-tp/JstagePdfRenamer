@@ -1,3 +1,14 @@
+function getMetaContentByName(
+  name: string,
+  fallback: string | undefined,
+): string | undefined {
+  const element = document.getElementsByName(
+    name,
+  ) as NodeListOf<HTMLMetaElement>;
+  if (!element[0]) return fallback;
+  return element[0].content;
+}
+
 /**
  * PDFリンク取得
  *
@@ -5,13 +16,9 @@
  * @return {*}  {string}
  */
 export function getPdfUrlFromJstage(): string {
-  const pdf_url_element = document.getElementsByName(
-    "pdf_url",
-  ) as unknown as HTMLMetaElement[];
-
-  if (!pdf_url_element[0]) throw new Error("PDF URL not found");
-
-  return pdf_url_element[0].content;
+  const pdf_url = getMetaContentByName("pdf_url", undefined);
+  if (pdf_url) return pdf_url;
+  throw new Error("PDF URL not found");
 }
 
 /**
@@ -35,12 +42,7 @@ export function getAuthorsFromJstage(): string[] {
  * @return {*}  {string}
  */
 export function getTitleFromJstage(): string {
-  const paper_title_element = document.getElementsByName(
-    "title",
-  ) as unknown as HTMLMetaElement[];
-
-  if (!paper_title_element[0]) return "Unknown Title";
-  return paper_title_element[0].content;
+  return getMetaContentByName("title", "Unknown Title")!;
 }
 
 /**
@@ -66,12 +68,7 @@ export function getPublicationDateFromJstage(): Date | undefined {
  * @return {*}  {string}
  */
 export function getJournalTitleFromJstage(): string {
-  const journal_title_element = document.getElementsByName(
-    "journal_title",
-  ) as NodeListOf<HTMLMetaElement>;
-
-  if (!journal_title_element[0]) return "Unknown Journal";
-  return journal_title_element[0].content;
+  return getMetaContentByName("journal_title", "Unknown Journal")!;
 }
 
 /**
@@ -81,12 +78,7 @@ export function getJournalTitleFromJstage(): string {
  * @return {string}
  */
 export function getVolumeFromJstage(): string {
-  const volume_element = document.getElementsByName(
-    "citation_volume",
-  ) as NodeListOf<HTMLMetaElement>;
-
-  if (!volume_element[0]) return "Unknown Volume";
-  return volume_element[0].content;
+  return getMetaContentByName("citation_volume", "Unknown Volume")!;
 }
 
 /**
@@ -95,11 +87,25 @@ export function getVolumeFromJstage(): string {
  * @return {*}  {(string | undefined)}
  */
 export function getIssueFromJstage(): string {
-  const issue_element = document.getElementsByName(
-    "citation_issue",
-  ) as NodeListOf<HTMLMetaElement>;
+  return getMetaContentByName("citation_issue", "Unknown Issue")!;
+}
 
-  if (!issue_element[0]) return "Unknown Issue";
+/**
+ * ファーストページ取得
+ *
+ * @export
+ * @return {*}  {string}
+ */
+export function getFirstPageFromJstage(): string {
+  return getMetaContentByName("citation_firstpage", "Unknown First Page")!;
+}
 
-  return issue_element[0].content;
+/**
+ * ラストページ取得
+ *
+ * @export
+ * @return {*}  {string}
+ */
+export function getLastPageFromJstage(): string {
+  return getMetaContentByName("citation_lastpage", "Unknown Last Page")!;
 }

@@ -20,6 +20,14 @@ export type ButtonColorInputProps = {
   field: AnyFieldApi;
   buttonDesign?: designType;
 };
+const colorOptions: { name: colorType; label: string }[] = [
+  { name: "primary", label: "青" },
+  { name: "secondary", label: "紫" },
+  { name: "error", label: "赤" },
+  { name: "info", label: "水" },
+  { name: "success", label: "緑" },
+  { name: "warning", label: "橙" },
+];
 export default function ButtonColorInput({
   field,
   buttonDesign,
@@ -58,36 +66,18 @@ export default function ButtonColorInput({
         </AccordionSummary>
         <AccordionDetails>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="primary">
-                青
-              </Button>
-            </Box>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="secondary" sx={{ ml: 1 }}>
-                紫
-              </Button>
-            </Box>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="error" sx={{ ml: 1 }}>
-                赤
-              </Button>
-            </Box>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="info" sx={{ ml: 1 }}>
-                水
-              </Button>
-            </Box>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="success" sx={{ ml: 1 }}>
-                緑
-              </Button>
-            </Box>
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="warning" sx={{ ml: 1 }}>
-                橙
-              </Button>
-            </Box>
+            {colorOptions.map(({ name, label }) => (
+              <Box sx={{ display: "flex", flexDirection: "column" }} key={name}>
+                <Button
+                  variant={buttonDesign}
+                  color={name}
+                  sx={{ mr: 1 }}
+                  onClick={() => field.handleChange(name)}
+                >
+                  {label}
+                </Button>
+              </Box>
+            ))}
           </Box>
         </AccordionDetails>
       </Accordion>
