@@ -125,40 +125,82 @@ export default function SettingForm(
                 <Alert color="info" variant="outlined" sx={{ mt: 1 }}>
                   例: <ExampleFileName fileNameTemplate={field.state.value} />
                 </Alert>
+                <Accordion sx={{ mt: 1, width: "auto" }} defaultExpanded>
+                  <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                    <Typography component={"span"}>説明</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <TableContainer>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>変数</TableCell>
+                            <TableCell>表示内容</TableCell>
+                            <TableCell></TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell>%authors%</TableCell>
+                            <TableCell>
+                              著者を中黒（・）で結合したもの
+                            </TableCell>
+                            <TableCell>
+                              <Button
+                                type="button"
+                                size="small"
+                                onClick={() =>
+                                  field.handleChange(
+                                    `${field.state.value}%authors%`,
+                                  )
+                                }
+                              >
+                                追加
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>%year%</TableCell>
+                            <TableCell>発行年</TableCell>
+                            <TableCell>
+                              <Button
+                                type="button"
+                                size="small"
+                                onClick={() =>
+                                  field.handleChange(
+                                    `${field.state.value}%year%`,
+                                  )
+                                }
+                              >
+                                追加
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>%title%</TableCell>
+                            <TableCell>論文タイトル</TableCell>
+                            <TableCell>
+                              <Button
+                                type="button"
+                                size="small"
+                                onClick={() =>
+                                  field.handleChange(
+                                    `${field.state.value}%title%`,
+                                  )
+                                }
+                              >
+                                追加
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </AccordionDetails>
+                </Accordion>
               </FormControl>
             )}
           />
-          <Accordion sx={{ mt: 1, width: "auto" }}>
-            <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-              <Typography component={"span"}>説明</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>変数</TableCell>
-                      <TableCell>表示内容</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>%authors%</TableCell>
-                      <TableCell>著者を中黒（・）で結合したもの</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>%year%</TableCell>
-                      <TableCell>発行年</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>%title%</TableCell>
-                      <TableCell>論文タイトル</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </AccordionDetails>
-          </Accordion>
         </TabPanel>
         <TabPanel value={"button"}>
           <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
