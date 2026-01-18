@@ -109,7 +109,7 @@ export async function makeFileName({
   // 雑誌名
   fileNameTemplate = fileNameTemplate.replace(
     /%journal_title%/g,
-    journalTitle || "",
+    journalTitle || "Unknown Journal",
   );
 
   return fileNameTemplate;
