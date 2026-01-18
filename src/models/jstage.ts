@@ -103,3 +103,30 @@ export function getIssueFromJstage(): string {
 
   return issue_element[0].content;
 }
+
+// ファーストページ取得
+export function getFirstPageFromJstage(): string {
+  const first_page_element = document.getElementsByName(
+    "citation_firstpage",
+  ) as NodeListOf<HTMLMetaElement>;
+
+  if (!first_page_element[0]) return "Unknown First Page";
+
+  return first_page_element[0].content;
+}
+
+/**
+ * ラストページ取得
+ *
+ * @export
+ * @return {*}  {string}
+ */
+export function getLastPageFromJstage(): string {
+  const last_page_element = document.getElementsByName(
+    "citation_lastpage",
+  ) as NodeListOf<HTMLMetaElement>;
+
+  if (!last_page_element[0]) return "Unknown Last Page";
+
+  return last_page_element[0].content;
+}

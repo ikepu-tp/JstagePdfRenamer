@@ -1,7 +1,9 @@
 import {
   getAuthorsFromJstage,
+  getFirstPageFromJstage,
   getIssueFromJstage,
   getJournalTitleFromJstage,
+  getLastPageFromJstage,
   getPdfUrlFromJstage,
   getPublicationDateFromJstage,
   getTitleFromJstage,
@@ -29,8 +31,10 @@ export async function getFileMeta(): Promise<FileMeta> {
   let publication_date: Date | undefined;
   let fileNameTemplate: string | undefined;
   let journalTitle: string | undefined;
-  let issue: string | undefined;
   let volume: string | undefined;
+  let issue: string | undefined;
+  let firstPage: string | undefined;
+  let lastPage: string | undefined;
 
   if (isTest()) {
     pdf_url =
@@ -40,6 +44,9 @@ export async function getFileMeta(): Promise<FileMeta> {
     publication_date = new Date("2024-09-01");
     journalTitle = "JstagePDFRenamer Test Journal";
     volume = "1";
+    issue = "1";
+    firstPage = "1";
+    lastPage = "10";
   }
   if (isJstage()) {
     pdf_url = getPdfUrlFromJstage();
@@ -49,6 +56,8 @@ export async function getFileMeta(): Promise<FileMeta> {
     journalTitle = getJournalTitleFromJstage();
     volume = getVolumeFromJstage();
     issue = getIssueFromJstage();
+    firstPage = getFirstPageFromJstage();
+    lastPage = getLastPageFromJstage();
   }
 
   return {
@@ -60,6 +69,8 @@ export async function getFileMeta(): Promise<FileMeta> {
       journalTitle,
       volume,
       issue,
+      firstPage,
+      lastPage,
     }),
     pdf_url,
   };
@@ -73,6 +84,8 @@ export type MakeFileNameProps = {
   journalTitle?: string;
   volume?: string;
   issue?: string;
+  firstPage?: string;
+  lastPage?: string;
 };
 export async function makeFileName({
   authors,
@@ -82,6 +95,8 @@ export async function makeFileName({
   journalTitle,
   volume,
   issue,
+  firstPage,
+  lastPage,
 }: MakeFileNameProps): Promise<string> {
   // ファイル名テンプレート
   if (!fileNameTemplate)
@@ -135,12 +150,25 @@ export async function makeFileName({
   );
 
   // 巻
-  fileNameTemplate = fileNameTemplate.replace(/%volume%/g, volume || "");
+  fileNameTemplate = fileNameTemplate.replace(
+    /%volume%/g,
+    volume || "Unknown Volume",
+  );
 
   // 号
   fileNameTemplate = fileNameTemplate.replace(
     /%issue%/g,
     issue || "Unknown Issue",
+  );
+
+  // ページ
+  fileNameTemplate = fileNameTemplate.replace(
+    /%first_page%/g,
+    firstPage || "Unknown First Page",
+  );
+  fileNameTemplate = fileNameTemplate.replace(
+    /%last_page%/g,
+    lastPage || "Unknown Last Page",
   );
 
   return fileNameTemplate;

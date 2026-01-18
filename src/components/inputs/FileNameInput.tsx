@@ -34,6 +34,8 @@ const variables: { key: string; description: string }[] = [
   },
   { key: "%volume%", description: "巻" },
   { key: "%issue%", description: "号" },
+  { key: "%first_page%", description: "開始ページ" },
+  { key: "%last_page%", description: "終了ページ" },
 ];
 export default function FileNameInput({
   field,
@@ -105,6 +107,10 @@ function ExampleFileName(props: {
       title: "サンプル論文タイトル",
       publication_date: new Date(),
       journalTitle: "サンプル雑誌名",
+      volume: "12",
+      issue: "3",
+      firstPage: "45",
+      lastPage: "67",
     }).then((fileName) => {
       setExampleFileName(fileName);
     });
