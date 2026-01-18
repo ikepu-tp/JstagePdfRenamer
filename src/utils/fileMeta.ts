@@ -1,5 +1,6 @@
 import {
   getAuthorsFromJstage,
+  getJournalTitleFromJstage,
   getPdfUrlFromJstage,
   getPublicationDateFromJstage,
   getTitleFromJstage,
@@ -25,6 +26,7 @@ export async function getFileMeta(): Promise<FileMeta> {
   let title: string | undefined;
   let publication_date: Date | undefined;
   let fileNameTemplate: string | undefined;
+  let journalTitle: string | undefined;
 
   if (isTest()) {
     pdf_url =
@@ -38,6 +40,7 @@ export async function getFileMeta(): Promise<FileMeta> {
     authors = getAuthorsFromJstage();
     title = getTitleFromJstage();
     publication_date = getPublicationDateFromJstage();
+    journalTitle = getJournalTitleFromJstage();
   }
 
   return {
@@ -46,6 +49,7 @@ export async function getFileMeta(): Promise<FileMeta> {
       title,
       publication_date,
       fileNameTemplate,
+      journalTitle,
     }),
     pdf_url,
   };
@@ -56,18 +60,22 @@ export type MakeFileNameProps = {
   title?: string;
   publication_date?: Date;
   fileNameTemplate?: string;
+  journalTitle?: string;
 };
 export async function makeFileName({
   authors,
   title,
   publication_date,
   fileNameTemplate,
+  journalTitle,
 }: MakeFileNameProps): Promise<string> {
+  // ファイル名テンプレート
   if (!fileNameTemplate)
     fileNameTemplate =
       (await getSyncStorage("fileNameTemplate")).fileNameTemplate ||
       DEFAULT_FILE_NAME_TEMPLATE;
 
+  // 著者
   // 著者が3人以上の場合、3人目以降は「ら」を付ける
   authors =
     authors?.map((author) => author.replace("　", " ").split(" ")[0]) || [];
@@ -77,10 +85,14 @@ export async function makeFileName({
   }
 
   fileNameTemplate = fileNameTemplate.replace(/%authors%/g, authors.join("・"));
+
+  // タイトル
   fileNameTemplate = fileNameTemplate.replace(
     /%title%/g,
     title || "Unknown Title",
   );
+
+  // 発行日
   fileNameTemplate = fileNameTemplate.replace(
     /%publication_date%/g,
     publication_date?.toLocaleString("ja-JP") ?? "",
@@ -93,6 +105,12 @@ export async function makeFileName({
       publication_date.getFullYear().toString(),
     );
   }
+
+  // 雑誌名
+  fileNameTemplate = fileNameTemplate.replace(
+    /%journal_title%/g,
+    journalTitle || "Unknown Journal",
+  );
 
   return fileNameTemplate;
 }

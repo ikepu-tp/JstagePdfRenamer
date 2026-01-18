@@ -58,3 +58,18 @@ export function getPublicationDateFromJstage(): Date | undefined {
   if (!paper_publication_date_element[0]) return undefined;
   return new Date(paper_publication_date_element[0].content);
 }
+
+/**
+ * 雑誌名取得
+ *
+ * @export
+ * @return {*}  {string}
+ */
+export function getJournalTitleFromJstage(): string {
+  const journal_title_element = document.getElementsByName(
+    "journal_title",
+  ) as NodeListOf<HTMLMetaElement>;
+
+  if (!journal_title_element[0]) return "Unknown Journal";
+  return journal_title_element[0].content;
+}

@@ -23,6 +23,12 @@ import { makeFileName } from "../../utils/fileMeta";
 export type FileNameInputProps = {
   field: AnyFieldApi;
 };
+const variables: { key: string; description: string }[] = [
+  { key: "%authors%", description: "著者を中黒（・）で結合したもの" },
+  { key: "%year%", description: "発行年" },
+  { key: "%title%", description: "論文タイトル" },
+  { key: "%journal_title%", description: "雑誌名" },
+];
 export default function FileNameInput({
   field,
 }: FileNameInputProps): React.ReactNode {
@@ -53,51 +59,25 @@ export default function FileNameInput({
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell>%authors%</TableCell>
-                  <TableCell>著者を中黒（・）で結合したもの</TableCell>
-                  <TableCell>
-                    <Button
-                      type="button"
-                      size="small"
-                      onClick={() =>
-                        field.handleChange(`${field.state.value}%authors%`)
-                      }
-                    >
-                      追加
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>%year%</TableCell>
-                  <TableCell>発行年</TableCell>
-                  <TableCell>
-                    <Button
-                      type="button"
-                      size="small"
-                      onClick={() =>
-                        field.handleChange(`${field.state.value}%year%`)
-                      }
-                    >
-                      追加
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>%title%</TableCell>
-                  <TableCell>論文タイトル</TableCell>
-                  <TableCell>
-                    <Button
-                      type="button"
-                      size="small"
-                      onClick={() =>
-                        field.handleChange(`${field.state.value}%title%`)
-                      }
-                    >
-                      追加
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                {variables.map((variable) => (
+                  <TableRow key={variable.key}>
+                    <TableCell>{variable.key}</TableCell>
+                    <TableCell>{variable.description}</TableCell>
+                    <TableCell>
+                      <Button
+                        type="button"
+                        size="small"
+                        onClick={() =>
+                          field.handleChange(
+                            `${field.state.value}${variable.key}`,
+                          )
+                        }
+                      >
+                        追加
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -118,6 +98,7 @@ function ExampleFileName(props: {
       authors: ["山田　太郎", "佐藤 花子", "鈴木一郎", "田中　次郎"],
       title: "サンプル論文タイトル",
       publication_date: new Date(),
+      journalTitle: "サンプル雑誌名",
     }).then((fileName) => {
       setExampleFileName(fileName);
     });
