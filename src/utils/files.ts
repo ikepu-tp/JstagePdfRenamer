@@ -1,20 +1,4 @@
-import { getFileFromJstage, isJstage } from "./jstage";
-import { getFileFromTest, isTest } from "./test";
-
 export type FileNameUrl = { file_name: string; pdf_url: string };
-
-/**
- * Get file name and URL from J-Stage page
- *
- * @export
- * @return {*}  {FileNameUrl}
- */
-export async function getFileNameUrl(): Promise<FileNameUrl> {
-  if (isJstage()) return await getFileFromJstage();
-  if (isTest()) return getFileFromTest();
-
-  throw new Error("Invalid URL");
-}
 
 /**
  * ファイルダウンロード処理

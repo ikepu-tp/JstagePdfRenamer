@@ -1,22 +1,29 @@
-import { DEFAULT_FILE_NAME_TEMPLATE } from "./constants";
-import { FileNameUrl } from "./files";
-import { getSyncStorage } from "./storage";
+import { DEFAULT_FILE_NAME_TEMPLATE } from "../utils/constants";
+import { getSyncStorage } from "../utils/storage";
 
-export function isJstage(): boolean {
-  return window.location.href.match(
-    /https:\/\/www.jstage.jst.go.jp\/article\/[^\S]*/
-  )
-    ? true
-    : false;
-}
-
-export async function getFileFromJstage(): Promise<FileNameUrl> {
+/**
+ * PDFリンク取得
+ *
+ * @export
+ * @return {*}  {string}
+ */
+export function getPdfUrlFromJstage(): string {
   const pdf_url_element = document.getElementsByName(
     "pdf_url"
   ) as unknown as HTMLMetaElement[];
 
   if (!pdf_url_element[0]) throw new Error("PDF URL not found");
 
+  return pdf_url_element[0].content;
+}
+
+/**
+ * 著者取得
+ *
+ * @export
+ * @return {*}  {string[]}
+ */
+export function getAuthorsFromJstage(): string[] {
   const authors_element = document.getElementsByName(
     "authors"
   ) as unknown as HTMLMetaElement[];
@@ -29,35 +36,38 @@ export async function getFileFromJstage(): Promise<FileNameUrl> {
       : "Unknown";
     authors.push(author_name);
   }
+  return authors;
+}
 
+/**
+ * タイトル取得
+ *
+ * @export
+ * @return {*}  {string}
+ */
+export function getTitleFromJstage(): string {
   const paper_title_element = document.getElementsByName(
     "title"
   ) as unknown as HTMLMetaElement[];
+
+  if (!paper_title_element[0]) return "Unknown Title";
+  return paper_title_element[0].content;
+}
+
+/**
+ * 発行日取得
+ *
+ * @export
+ * @return {*}  {(Date | undefined)}
+ */
+export function getPublicationDateFromJstage(): Date | undefined {
+  // published date
   const paper_publication_date_element = document.getElementsByName(
     "publication_date"
   ) as unknown as HTMLMetaElement[];
 
-  // paper title
-  const paper_title = paper_title_element[0]
-    ? paper_title_element[0].content
-    : "Unknown Title";
-
-  // published date
-  const paper_publication_date = paper_publication_date_element[0]
-    ? new Date(paper_publication_date_element[0].content)
-    : "Unknown publication date";
-  const pdf_url = pdf_url_element[0].content;
-
-  const file_name = await getFileNameFromTemplate({
-    authors,
-    title: paper_title,
-    publication_date: paper_publication_date,
-  });
-
-  return {
-    file_name,
-    pdf_url,
-  };
+  if (!paper_publication_date_element[0]) return undefined;
+  return new Date(paper_publication_date_element[0].content);
 }
 
 export type getFileNameFromTemplateProps = {

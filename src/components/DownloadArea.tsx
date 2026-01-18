@@ -17,16 +17,13 @@ import React, {
   useState,
 } from "react";
 import { DEFAULT_STORAGE } from "../utils/constants";
+import { getFileMeta } from "../utils/fileMeta";
 import {
   getSyncStorage,
   setSyncStorage,
   StorageResource,
 } from "../utils/storage";
-import {
-  fileDownloadFromUrl,
-  FileNameUrl,
-  getFileNameUrl,
-} from "./../utils/files";
+import { fileDownloadFromUrl, FileNameUrl } from "./../utils/files";
 
 export default function DownloadArea(): React.ReactNode {
   const [fileName, setFileName] = useState<string>("");
@@ -61,7 +58,7 @@ export default function DownloadArea(): React.ReactNode {
   }
 
   async function getFile(): Promise<void> {
-    const fileNameUrl = await getFileNameUrl();
+    const fileNameUrl = await getFileMeta();
     setFileName(fileNameUrl.file_name);
     fileRef.current = fileNameUrl;
   }
@@ -98,8 +95,8 @@ export default function DownloadArea(): React.ReactNode {
     return <MinimizeDownloadArea toggleMinimize={toggleMinimize} />;
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         padding: 0,
         position: "fixed",
         right: 0,
@@ -163,7 +160,7 @@ export default function DownloadArea(): React.ReactNode {
           PDFをダウンロード
         </Button>
       </Box>
-    </div>
+    </Box>
   );
 }
 
@@ -172,7 +169,7 @@ type MinimizeDownloadAreaProps = {
 };
 
 function MinimizeDownloadArea(
-  props: MinimizeDownloadAreaProps
+  props: MinimizeDownloadAreaProps,
 ): React.ReactNode {
   return (
     <Button

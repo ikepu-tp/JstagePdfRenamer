@@ -24,14 +24,14 @@ import {
   Typography,
 } from "@mui/material";
 import React, { ChangeEvent, useActionState, useEffect, useState } from "react";
-import { getFileNameFromTemplate } from "../utils/jstage";
+import { getFileNameFromTemplate } from "../models/jstage";
 import { setSyncStorage, StorageResource } from "../utils/storage";
 import SuccessedNotification from "./SuccessedNotification";
 import Visibility from "./Visibility";
 
 export type SettingFormProps = StorageResource;
 export default function SettingForm(
-  props: SettingFormProps
+  props: SettingFormProps,
 ): React.ReactElement {
   const [Setting, setSetting] = useState<StorageResource>(props);
   const [exampleFileName, setExampleFileName] = useState<string>("");
@@ -83,7 +83,7 @@ export default function SettingForm(
 
   function handleChecked(
     e: ChangeEvent<HTMLInputElement>,
-    checked: boolean
+    checked: boolean,
   ): void {
     setSetting({
       ...Setting,
