@@ -4,12 +4,12 @@ import {
   DEFAULT_BUTTON_DESIGN,
   DEFAULT_FILE_NAME_TEMPLATE,
 } from "../utils/constants";
-import { getSyncStorage } from "../utils/storage";
-import SettingForm, { SettingFormProps } from "./SettingForm";
+import { getSyncStorage, StorageResource } from "../utils/storage";
+import SettingForm from "./SettingForm";
 
 export function Option(): React.ReactNode {
-  const [setting, setSetting] = useState<SettingFormProps | undefined>(
-    undefined
+  const [setting, setSetting] = useState<StorageResource | undefined>(
+    undefined,
   );
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function Option(): React.ReactNode {
       "minimize",
       "visible",
     ]);
-    const newSetting: SettingFormProps = {
+    const newSetting: StorageResource = {
       fileNameTemplate: storage.fileNameTemplate || DEFAULT_FILE_NAME_TEMPLATE,
       buttonDesign: storage.buttonDesign || DEFAULT_BUTTON_DESIGN,
       buttonColor: storage.buttonColor || DEFAULT_BUTTON_COLOR,
@@ -37,5 +37,5 @@ export function Option(): React.ReactNode {
 
   if (!setting) return null;
 
-  return <SettingForm {...setting} />;
+  return <SettingForm setting={setting} />;
 }
