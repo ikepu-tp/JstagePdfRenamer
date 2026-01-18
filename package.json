@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.1",
     "@mui/material": "^6.4.8",
+    "@tanstack/react-form": "^1.27.7",
     "@vitejs/plugin-react": "^4.5.2",
     "copyfiles": "^2.4.1",
     "react": "^19.0.0",

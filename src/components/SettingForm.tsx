@@ -7,11 +7,12 @@ import {
   Box,
   Button,
   FormControl,
+  FormControlLabel,
   InputLabel,
   MenuItem,
   Paper,
   Select,
-  SelectChangeEvent,
+  Switch,
   Tab,
   Table,
   TableBody,
@@ -23,24 +24,35 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { ChangeEvent, useActionState, useEffect, useState } from "react";
-import { getFileNameFromTemplate } from "../utils/jstage";
-import { setSyncStorage, StorageResource } from "../utils/storage";
+import { useForm } from "@tanstack/react-form";
+import React, { useEffect, useState } from "react";
+import { makeFileName } from "../utils/fileMeta";
+import {
+  colorType,
+  designType,
+  setSyncStorage,
+  StorageResource,
+} from "../utils/storage";
 import SuccessedNotification from "./SuccessedNotification";
-import Visibility from "./Visibility";
 
-export type SettingFormProps = StorageResource;
+export type SettingFormProps = {
+  setting: StorageResource;
+};
 export default function SettingForm(
-  props: SettingFormProps
+  props: SettingFormProps,
 ): React.ReactElement {
-  const [Setting, setSetting] = useState<StorageResource>(props);
-  const [exampleFileName, setExampleFileName] = useState<string>("");
   const [TabValue, setTabValue] = useState<string>("fileName");
   const [openNotification, setOpenNotification] = useState<boolean>(false);
-  const [, action, isPending] = useActionState<null>(async (data) => {
-    setSyncStorage(Setting);
-    return data;
-  }, null);
+
+  const form = useForm({
+    defaultValues: {
+      ...{},
+      ...props.setting,
+    },
+    onSubmit: async ({ value }) => {
+      setSyncStorage(value);
+    },
+  });
 
   useEffect(() => {
     chrome.storage.onChanged.addListener(handleStorageChange);
@@ -49,46 +61,8 @@ export default function SettingForm(
     };
   }, []);
 
-  useEffect(() => {
-    getExampleFileName(Setting.fileNameTemplate);
-  }, [Setting.fileNameTemplate]);
-
   function handleStorageChange(): void {
     setOpenNotification(true);
-  }
-
-  async function getExampleFileName(name: string | undefined): Promise<void> {
-    const fileName = await getFileNameFromTemplate({
-      fileNameTemplate: name,
-      authors: ["山田　太郎", "佐藤 花子", "鈴木一郎", "田中　次郎"],
-      title: "サンプル論文タイトル",
-      publication_date: new Date(),
-    });
-    setExampleFileName(fileName);
-  }
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSetting({
-      ...Setting,
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  function handleChangeBySelect(e: SelectChangeEvent<string>) {
-    setSetting({
-      ...Setting,
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  function handleChecked(
-    e: ChangeEvent<HTMLInputElement>,
-    checked: boolean
-  ): void {
-    setSetting({
-      ...Setting,
-      [e.currentTarget.name]: checked,
-    });
   }
 
   function handleChangeTab(_: React.SyntheticEvent, value: string) {
@@ -106,6 +80,11 @@ export default function SettingForm(
       </div>
     );
   }
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    e.stopPropagation();
+    form.handleSubmit();
+  }
 
   return (
     <Paper
@@ -121,7 +100,7 @@ export default function SettingForm(
       <Box
         component={"form"}
         sx={{ display: "flex", flexDirection: "column", rowGap: 1, p: 2 }}
-        action={action}
+        onSubmit={handleSubmit}
       >
         <Tabs value={TabValue} onChange={handleChangeTab}>
           <Tab value={"fileName"} label="ファイル名" />
@@ -132,199 +111,309 @@ export default function SettingForm(
           <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
             ファイル名設定
           </Typography>
-          <FormControl>
-            <TextField
-              label="ファイル名テンプレート"
-              type="text"
-              name="fileNameTemplate"
-              variant="outlined"
-              value={Setting.fileNameTemplate}
-              onChange={handleChange}
-            />
-            <Alert color="info" variant="outlined" sx={{ mt: 1 }}>
-              例: {exampleFileName}
-            </Alert>
-            <Accordion sx={{ mt: 1, width: "auto" }}>
-              <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                <Typography component={"span"}>説明</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>変数</TableCell>
-                        <TableCell>表示内容</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>%authors%</TableCell>
-                        <TableCell>著者を中黒（・）で結合したもの</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>%year%</TableCell>
-                        <TableCell>発行年</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>%title%</TableCell>
-                        <TableCell>論文タイトル</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </AccordionDetails>
-            </Accordion>
-          </FormControl>
+          <form.Field
+            name="fileNameTemplate"
+            children={(field) => (
+              <FormControl fullWidth>
+                <TextField
+                  label="ファイル名テンプレート"
+                  type="text"
+                  variant="outlined"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                <Alert color="info" variant="outlined" sx={{ mt: 1 }}>
+                  例: <ExampleFileName fileNameTemplate={field.state.value} />
+                </Alert>
+                <Accordion sx={{ mt: 1, width: "auto" }} defaultExpanded>
+                  <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                    <Typography component={"span"}>説明</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <TableContainer>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>変数</TableCell>
+                            <TableCell>表示内容</TableCell>
+                            <TableCell></TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell>%authors%</TableCell>
+                            <TableCell>
+                              著者を中黒（・）で結合したもの
+                            </TableCell>
+                            <TableCell>
+                              <Button
+                                type="button"
+                                size="small"
+                                onClick={() =>
+                                  field.handleChange(
+                                    `${field.state.value}%authors%`,
+                                  )
+                                }
+                              >
+                                追加
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>%year%</TableCell>
+                            <TableCell>発行年</TableCell>
+                            <TableCell>
+                              <Button
+                                type="button"
+                                size="small"
+                                onClick={() =>
+                                  field.handleChange(
+                                    `${field.state.value}%year%`,
+                                  )
+                                }
+                              >
+                                追加
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>%title%</TableCell>
+                            <TableCell>論文タイトル</TableCell>
+                            <TableCell>
+                              <Button
+                                type="button"
+                                size="small"
+                                onClick={() =>
+                                  field.handleChange(
+                                    `${field.state.value}%title%`,
+                                  )
+                                }
+                              >
+                                追加
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </AccordionDetails>
+                </Accordion>
+              </FormControl>
+            )}
+          />
         </TabPanel>
         <TabPanel value={"button"}>
           <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
             ボタン設定
           </Typography>
           <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
-            <FormControl>
-              <InputLabel id="button-design-label">ボタンデザイン</InputLabel>
-              <Select
-                labelId="button-design-label"
-                label="ボタンデザイン"
-                name="buttonDesign"
-                value={Setting.buttonDesign}
-                onChange={handleChangeBySelect}
-              >
-                <MenuItem value="text">文字のみ</MenuItem>
-                <MenuItem value="outlined">囲み</MenuItem>
-                <MenuItem value="contained">色付き</MenuItem>
-              </Select>
-              <Accordion sx={{ mt: 1, width: "auto" }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                  <Typography component={"span"}>説明</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Button variant="text" color={Setting.buttonColor}>
-                    文字のみ
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    sx={{ ml: 1 }}
-                    color={Setting.buttonColor}
+            <form.Field
+              name="buttonDesign"
+              children={(field) => (
+                <FormControl>
+                  <InputLabel id="button-design-label">
+                    ボタンデザイン
+                  </InputLabel>
+                  <Select
+                    labelId="button-design-label"
+                    label="ボタンデザイン"
+                    value={field.state.value}
+                    onChange={(e) =>
+                      field.handleChange(e.target.value as designType)
+                    }
                   >
-                    囲み
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{ ml: 1 }}
-                    color={Setting.buttonColor}
-                  >
-                    色付き
-                  </Button>
-                </AccordionDetails>
-              </Accordion>
-            </FormControl>
+                    <MenuItem value="text">文字のみ</MenuItem>
+                    <MenuItem value="outlined">囲み</MenuItem>
+                    <MenuItem value="contained">色付き</MenuItem>
+                  </Select>
+                  <Accordion sx={{ mt: 1, width: "auto" }}>
+                    <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                      <Typography component={"span"}>説明</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Button
+                        variant="text"
+                        color={form.state.values.buttonColor}
+                      >
+                        文字のみ
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        sx={{ ml: 1 }}
+                        color={form.state.values.buttonColor}
+                      >
+                        囲み
+                      </Button>
+                      <Button
+                        variant="contained"
+                        sx={{ ml: 1 }}
+                        color={form.state.values.buttonColor}
+                      >
+                        色付き
+                      </Button>
+                    </AccordionDetails>
+                  </Accordion>
+                </FormControl>
+              )}
+            />
           </Box>
           <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
-            <FormControl sx={{ mt: 2 }}>
-              <InputLabel id="button-color-label">ボタンカラー</InputLabel>
-              <Select
-                labelId="button-color-label"
-                label="ボタンカラー"
-                name="buttonColor"
-                value={Setting.buttonColor}
-                onChange={handleChangeBySelect}
-              >
-                <MenuItem value="primary">
-                  <Typography color="primary">青</Typography>
-                </MenuItem>
-                <MenuItem value="secondary">
-                  <Typography color="secondary">紫</Typography>
-                </MenuItem>
-                <MenuItem value="error">
-                  <Typography color="error">赤</Typography>
-                </MenuItem>
-                <MenuItem value="info">
-                  <Typography color="info">水</Typography>
-                </MenuItem>
-                <MenuItem value="success">
-                  <Typography color="success">緑</Typography>
-                </MenuItem>
-                <MenuItem value="warning">
-                  <Typography color="warning">橙</Typography>
-                </MenuItem>
-              </Select>
-              <Accordion sx={{ mt: 1, width: "auto" }}>
-                <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                  <Typography component={"span"}>説明</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Box sx={{ display: "flex", flexDirection: "row" }}>
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <Button variant={Setting.buttonDesign} color="primary">
-                        青
-                      </Button>
-                    </Box>
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <Button
-                        variant={Setting.buttonDesign}
-                        color="secondary"
-                        sx={{ ml: 1 }}
-                      >
-                        紫
-                      </Button>
-                    </Box>
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <Button
-                        variant={Setting.buttonDesign}
-                        color="error"
-                        sx={{ ml: 1 }}
-                      >
-                        赤
-                      </Button>
-                    </Box>
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <Button
-                        variant={Setting.buttonDesign}
-                        color="info"
-                        sx={{ ml: 1 }}
-                      >
-                        水
-                      </Button>
-                    </Box>
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <Button
-                        variant={Setting.buttonDesign}
-                        color="success"
-                        sx={{ ml: 1 }}
-                      >
-                        緑
-                      </Button>
-                    </Box>
-                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                      <Button
-                        variant={Setting.buttonDesign}
-                        color="warning"
-                        sx={{ ml: 1 }}
-                      >
-                        橙
-                      </Button>
-                    </Box>
-                  </Box>
-                </AccordionDetails>
-              </Accordion>
-            </FormControl>
+            <form.Field
+              name="buttonColor"
+              children={(field) => (
+                <FormControl sx={{ mt: 2 }}>
+                  <InputLabel id="button-color-label">ボタンカラー</InputLabel>
+                  <Select
+                    labelId="button-color-label"
+                    label="ボタンカラー"
+                    value={field.state.value}
+                    onChange={(e) =>
+                      field.handleChange(e.target.value as colorType)
+                    }
+                  >
+                    <MenuItem value="primary">
+                      <Typography color="primary">青</Typography>
+                    </MenuItem>
+                    <MenuItem value="secondary">
+                      <Typography color="secondary">紫</Typography>
+                    </MenuItem>
+                    <MenuItem value="error">
+                      <Typography color="error">赤</Typography>
+                    </MenuItem>
+                    <MenuItem value="info">
+                      <Typography color="info">水</Typography>
+                    </MenuItem>
+                    <MenuItem value="success">
+                      <Typography color="success">緑</Typography>
+                    </MenuItem>
+                    <MenuItem value="warning">
+                      <Typography color="warning">橙</Typography>
+                    </MenuItem>
+                  </Select>
+                  <Accordion sx={{ mt: 1, width: "auto" }}>
+                    <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                      <Typography component={"span"}>説明</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box sx={{ display: "flex", flexDirection: "row" }}>
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <Button
+                            variant={form.state.values.buttonDesign}
+                            color="primary"
+                          >
+                            青
+                          </Button>
+                        </Box>
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <Button
+                            variant={form.state.values.buttonDesign}
+                            color="secondary"
+                            sx={{ ml: 1 }}
+                          >
+                            紫
+                          </Button>
+                        </Box>
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <Button
+                            variant={form.state.values.buttonDesign}
+                            color="error"
+                            sx={{ ml: 1 }}
+                          >
+                            赤
+                          </Button>
+                        </Box>
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <Button
+                            variant={form.state.values.buttonDesign}
+                            color="info"
+                            sx={{ ml: 1 }}
+                          >
+                            水
+                          </Button>
+                        </Box>
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <Button
+                            variant={form.state.values.buttonDesign}
+                            color="success"
+                            sx={{ ml: 1 }}
+                          >
+                            緑
+                          </Button>
+                        </Box>
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                          <Button
+                            variant={form.state.values.buttonDesign}
+                            color="warning"
+                            sx={{ ml: 1 }}
+                          >
+                            橙
+                          </Button>
+                        </Box>
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
+                </FormControl>
+              )}
+            />
           </Box>
         </TabPanel>
         <TabPanel value={"visibility"}>
           <Typography variant="h6" component={"div"} sx={{ mb: 1 }}>
             表示設定
           </Typography>
-          <Visibility
-            Setting={{ minimize: Setting.minimize, visible: Setting.visible }}
-            handleChecked={handleChecked}
-          />
+
+          <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
+            <form.Field
+              name="minimize"
+              children={(field) => (
+                <FormControlLabel
+                  control={
+                    <Switch
+                      name="minimize"
+                      checked={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.checked)}
+                    />
+                  }
+                  label="最小化"
+                />
+              )}
+            />
+          </Box>
+          <Box sx={{ mb: 1, display: "flex", flexDirection: "column" }}>
+            <form.Field
+              name="visible"
+              children={(field) => (
+                <FormControlLabel
+                  control={
+                    <Switch
+                      name="visible"
+                      checked={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.checked)}
+                    />
+                  }
+                  label="表示"
+                />
+              )}
+            />
+          </Box>
         </TabPanel>
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-          <Button type="submit" disabled={isPending} variant="contained">
-            保存
-          </Button>
+          <form.Subscribe
+            selector={(state) => [
+              state.canSubmit,
+              state.isSubmitting,
+              state.isPristine,
+            ]}
+            children={([canSubmit, isSubmitting, isPristine]) => (
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={!canSubmit || isSubmitting || isPristine}
+              >
+                {isSubmitting ? "保存中..." : "保存"}
+              </Button>
+            )}
+          />
         </Box>
         <SuccessedNotification
           open={openNotification}
@@ -334,4 +423,23 @@ export default function SettingForm(
       </Box>
     </Paper>
   );
+}
+
+function ExampleFileName(props: {
+  fileNameTemplate?: string;
+}): React.ReactElement {
+  const [exampleFileName, setExampleFileName] = useState<string>("");
+
+  useEffect(() => {
+    makeFileName({
+      fileNameTemplate: props.fileNameTemplate,
+      authors: ["山田　太郎", "佐藤 花子", "鈴木一郎", "田中　次郎"],
+      title: "サンプル論文タイトル",
+      publication_date: new Date(),
+    }).then((fileName) => {
+      setExampleFileName(fileName);
+    });
+  }, [props.fileNameTemplate]);
+
+  return <>{exampleFileName}</>;
 }
