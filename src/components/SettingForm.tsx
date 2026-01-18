@@ -54,6 +54,7 @@ export default function SettingForm(
       </div>
     );
   }
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     e.stopPropagation();
