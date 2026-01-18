@@ -41,13 +41,27 @@ export default function ButtonInput({
           <Typography component={"span"}>説明</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Button variant="text" color={buttonColor}>
+          <Button
+            variant="text"
+            color={buttonColor}
+            onClick={() => field.handleChange("text")}
+          >
             文字のみ
           </Button>
-          <Button variant="outlined" sx={{ ml: 1 }} color={buttonColor}>
+          <Button
+            variant="outlined"
+            sx={{ ml: 1 }}
+            color={buttonColor}
+            onClick={() => field.handleChange("outlined")}
+          >
             囲み
           </Button>
-          <Button variant="contained" sx={{ ml: 1 }} color={buttonColor}>
+          <Button
+            variant="contained"
+            sx={{ ml: 1 }}
+            color={buttonColor}
+            onClick={() => field.handleChange("contained")}
+          >
             色付き
           </Button>
         </AccordionDetails>

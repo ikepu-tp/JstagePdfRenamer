@@ -59,32 +59,61 @@ export default function ButtonColorInput({
         <AccordionDetails>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="primary">
+              <Button
+                variant={buttonDesign}
+                color="primary"
+                onClick={() => field.handleChange("primary")}
+              >
                 青
               </Button>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="secondary" sx={{ ml: 1 }}>
+              <Button
+                variant={buttonDesign}
+                color="secondary"
+                sx={{ ml: 1 }}
+                onClick={() => field.handleChange("secondary")}
+              >
                 紫
               </Button>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="error" sx={{ ml: 1 }}>
+              <Button
+                variant={buttonDesign}
+                color="error"
+                sx={{ ml: 1 }}
+                onClick={() => field.handleChange("error")}
+              >
                 赤
               </Button>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="info" sx={{ ml: 1 }}>
+              <Button
+                variant={buttonDesign}
+                color="info"
+                sx={{ ml: 1 }}
+                onClick={() => field.handleChange("info")}
+              >
                 水
               </Button>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="success" sx={{ ml: 1 }}>
+              <Button
+                variant={buttonDesign}
+                color="success"
+                sx={{ ml: 1 }}
+                onClick={() => field.handleChange("success")}
+              >
                 緑
               </Button>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button variant={buttonDesign} color="warning" sx={{ ml: 1 }}>
+              <Button
+                variant={buttonDesign}
+                color="warning"
+                sx={{ ml: 1 }}
+                onClick={() => field.handleChange("warning")}
+              >
                 橙
               </Button>
             </Box>
