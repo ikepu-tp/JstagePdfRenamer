@@ -76,21 +76,21 @@ export async function makeFileName({
     authors[2] = `${authors[2]}ら`;
   }
 
-  fileNameTemplate = fileNameTemplate.replace("%authors%", authors.join("・"));
+  fileNameTemplate = fileNameTemplate.replace(/%authors%/g, authors.join("・"));
   fileNameTemplate = fileNameTemplate.replace(
-    "%title%",
-    title || "Unknown Title"
+    /%title%/g,
+    title || "Unknown Title",
   );
   fileNameTemplate = fileNameTemplate.replace(
-    "%publication_date%",
-    (publication_date || "")?.toLocaleString("ja-JP")
+    /%publication_date%/g,
+    (publication_date || "")?.toLocaleString("ja-JP"),
   );
 
   // publication_date is a Date object or string, so we need to format it
   if (publication_date instanceof Date) {
     fileNameTemplate = fileNameTemplate.replace(
-      "%year%",
-      publication_date.getFullYear().toString()
+      /%year%/g,
+      publication_date.getFullYear().toString(),
     );
   }
 

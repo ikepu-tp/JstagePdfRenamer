@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import { useForm } from "@tanstack/react-form";
 import React, { useEffect, useState } from "react";
-import { getFileNameFromTemplate } from "../models/jstage";
+import { makeFileName } from "../utils/fileMeta";
 import {
   colorType,
   designType,
@@ -431,7 +431,7 @@ function ExampleFileName(props: {
   const [exampleFileName, setExampleFileName] = useState<string>("");
 
   useEffect(() => {
-    getFileNameFromTemplate({
+    makeFileName({
       fileNameTemplate: props.fileNameTemplate,
       authors: ["山田　太郎", "佐藤 花子", "鈴木一郎", "田中　次郎"],
       title: "サンプル論文タイトル",
