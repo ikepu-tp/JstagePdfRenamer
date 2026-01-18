@@ -77,14 +77,14 @@ export function getJournalTitleFromJstage(): string {
 /**
  * 号取得
  *
- * @export
  * @return {*}  {(string | undefined)}
  */
-export function getIssueFromJstage(): string | undefined {
+export function getIssueFromJstage(): string {
   const issue_element = document.getElementsByName(
     "citation_issue",
   ) as NodeListOf<HTMLMetaElement>;
 
-  if (!issue_element[0]) return undefined;
+  if (!issue_element[0]) return "Unknown Issue";
+
   return issue_element[0].content;
 }
